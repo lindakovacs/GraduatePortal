@@ -9,6 +9,7 @@ function Registration(props) {
   const [confirmedpassword, setConfirmedpassword] = useState("");
   const [passworderror, setPassworderror] = useState("");
   const [linkvalidity, setLinkvalidity] = useState(true);
+  const [invalidregistrationlink, setInvalidregistrationlink] = useState(false);
 
   const registrationhash = props.match.params.hash;
 
@@ -37,7 +38,7 @@ function Registration(props) {
     }
   };
 
-  const createuserlinkhash = () => {
+  const newuserlinkhashgenerator = () => {
     let hash = "";
     let characters =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
@@ -51,22 +52,27 @@ function Registration(props) {
   };
 
   const registrationlinkcheck = () => {
-    if (Date.now() - parseInt(registrationhash.slice(32)) > 604800000) {
+    if (isNaN(parseInt(registrationhash.slice(32)))) {
+      setInvalidregistrationlink(true);
+    } else if (Date.now() - parseInt(registrationhash.slice(32)) > 604800000) {
       setLinkvalidity(false);
     }
   };
 
   useEffect(() => {
     registrationlinkcheck();
-    console.log(linkvalidity);
   }, []);
 
-  console.log("user hash:", registrationhash);
-  console.log("generated hash:", createuserlinkhash());
+  console.log("user hash from url:", registrationhash);
+  console.log("generated hash:", newuserlinkhashgenerator());
 
   return (
     <div className="login container text-center">
-      {linkvalidity ? (
+      {invalidregistrationlink ? (
+        <ErrorMessage>
+          <h1>Registration Link Invalid</h1>
+        </ErrorMessage>
+      ) : linkvalidity ? (
         <form className="panel" onSubmit={e => e.preventDefault()}>
           <header className="panel-body">
             <h2>New User Registration</h2>
@@ -89,7 +95,10 @@ function Registration(props) {
                 placeholder="Password"
                 aria-label="Password"
                 value={password}
-                onChange={e => setPassword(e.target.value)}
+                onChange={e => {
+                  setPassword(e.target.value);
+                  setPassworderror("");
+                }}
               />
             </FormGroup>
             <FormGroup controlId="password-confirmation">
