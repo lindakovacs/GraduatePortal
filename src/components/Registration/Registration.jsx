@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { FormGroup, FormControl, Button } from "react-bootstrap";
+import { FormGroup, FormControl, Button, InputGroup } from "react-bootstrap";
 import ErrorMessage from "../Widgets/ErrorMessage";
 import "./Registration.css";
 
 function Registration(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showpassword, setShowpassword] = useState(false);
+  const [showconfirmedpassword, setShowconfirmedpassword] = useState(false);
   const [confirmedpassword, setConfirmedpassword] = useState("");
   const [passworderror, setPassworderror] = useState("");
   const [linkvalidity, setLinkvalidity] = useState(true);
@@ -63,7 +65,7 @@ function Registration(props) {
     registrationlinkcheck();
   }, []);
 
-  console.log("user hash from url:", registrationhash);
+  console.log("hash from url:", registrationhash);
   console.log("generated hash:", newuserlinkhashgenerator());
 
   return (
@@ -81,7 +83,6 @@ function Registration(props) {
             <FormGroup controlId="user-email">
               <FormControl
                 type="email"
-                className="login-input"
                 placeholder="Email"
                 aria-label="Email"
                 value={username}
@@ -89,27 +90,47 @@ function Registration(props) {
               />
             </FormGroup>
             <FormGroup controlId="password">
-              <FormControl
-                type="password"
-                className="login-input"
-                placeholder="Password"
-                aria-label="Password"
-                value={password}
-                onChange={e => {
-                  setPassword(e.target.value);
-                  setPassworderror("");
-                }}
-              />
+              <InputGroup>
+                <FormControl
+                  type={showpassword ? "text" : "password"}
+                  placeholder="Password"
+                  aria-label="Password"
+                  value={password}
+                  onChange={e => {
+                    setPassword(e.target.value);
+                    setPassworderror("");
+                  }}
+                />
+                <InputGroup.Addon>
+                  <input
+                    type="checkbox"
+                    aria-label="Show"
+                    className="login-input"
+                    onClick={() => setShowpassword(!showpassword)}
+                  />
+                </InputGroup.Addon>
+              </InputGroup>
             </FormGroup>
             <FormGroup controlId="password-confirmation">
-              <FormControl
-                type="password"
-                className="login-input"
-                placeholder="Confirm Password"
-                aria-label="Password"
-                value={confirmedpassword}
-                onChange={e => setConfirmedpassword(e.target.value)}
-              />
+              <InputGroup>
+                <FormControl
+                  type={showconfirmedpassword ? "text" : "password"}
+                  placeholder="Confirm Password"
+                  aria-label="Password"
+                  value={confirmedpassword}
+                  onChange={e => setConfirmedpassword(e.target.value)}
+                />
+                <InputGroup.Addon>
+                  <input
+                    type="checkbox"
+                    aria-label="Show"
+                    className="login-input"
+                    onClick={() =>
+                      setShowconfirmedpassword(!showconfirmedpassword)
+                    }
+                  />
+                </InputGroup.Addon>
+              </InputGroup>
             </FormGroup>
             <div className="text-left">
               <p>
