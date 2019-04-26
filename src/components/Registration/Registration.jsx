@@ -17,23 +17,12 @@ function Registration(props) {
 
   const passwordvalidation = () => {
     setPassworderror("");
-    let regexp = /([!@#$%^&*(),.?":{}|<>])+([0-9])+([A-Z])+([a-z])+/g;
-    if (
-      regexp.test(
-        password
-          .split("")
-          .sort()
-          .join("")
-      )
-    ) {
-      if (password.length >= 6) {
-        if (password === confirmedpassword) {
-          return true;
-        } else {
-          setPassworderror("Passwords don't match");
-        }
+    let regexp = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,99}$/;
+    if (password.match(regexp)) {
+      if (password === confirmedpassword) {
+        return true;
       } else {
-        setPassworderror("password must be at least 6 characters");
+        setPassworderror("Passwords don't match");
       }
     } else {
       setPassworderror("Password doesn't meet requirements");
@@ -43,7 +32,7 @@ function Registration(props) {
   const newuserlinkhashgenerator = () => {
     let hash = "";
     let characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!$&*";
     let charactersLength = characters.length;
     for (let i = 0; i < 32; i++) {
       hash += characters.charAt(Math.floor(Math.random() * charactersLength));
