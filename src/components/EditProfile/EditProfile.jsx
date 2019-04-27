@@ -38,6 +38,8 @@ class EditProfile extends Component {
       github: "",
       linkedin: "",
       email: "",
+      // added password to state
+      password: "",
       website: "",
       phone: "",
       yearOfGrad: "",
@@ -50,7 +52,8 @@ class EditProfile extends Component {
     lastNameValid: null,
     yearOfGradValid: null,
     emailValid: null,
-    submitForm: false
+    submitForm: false,
+    passwordValid: null
   };
 
   handleEditProfile = e => {
@@ -61,7 +64,9 @@ class EditProfile extends Component {
       ["firstName", "firstNameValid"],
       ["lastName", "lastNameValid"],
       ["yearOfGrad", "yearOfGradValid"],
-      ["email", "emailValid"]
+      ["email", "emailValid"],
+      // added password Validation
+      ["password", "passwordValid"]
     ];
     for (let key of requiredArray) {
       if (!this.state.profileData[key[0]]) {
@@ -118,8 +123,8 @@ class EditProfile extends Component {
         ...this.state.profileData,
         isActive: Math.abs(this.state.profileData.isActive - 1)
       }
-    })
-  }
+    });
+  };
 
   closeModal = () => {
     this.setState({
@@ -152,6 +157,8 @@ class EditProfile extends Component {
             github: this.props.profiles[id].links.github,
             linkedin: this.props.profiles[id].links.linkedin,
             email: this.props.profiles[id].links.email,
+           // added password tp props.profiles 
+            password: this.props.profiles[id].password,
             website: this.props.profiles[id].links.website,
             phone: this.props.profiles[id].phone,
             yearOfGrad: this.props.profiles[id].yearOfGrad,
@@ -176,6 +183,8 @@ class EditProfile extends Component {
           github: profile.links.github,
           linkedin: profile.links.linkedin,
           email: profile.links.email,
+          // added password to profile
+          password: profile.password,
           website: profile.links.website,
           phone: profile.phone,
           yearOfGrad: profile.yearOfGrad,
@@ -264,18 +273,22 @@ class EditProfile extends Component {
 
             {/* Profile Resume */}
             <div className="form-resume">
-            {this.state.profileData.resume ?
-              <img 
-                src={resumeIcon}
-                width={100}
-                height={100}
-                alt="Resume icon" />
-              : (
+              {this.state.profileData.resume ? (
+                <img
+                  src={resumeIcon}
+                  width={100}
+                  height={100}
+                  alt="Resume icon"
+                />
+              ) : (
                 <div className="missing-btn">
-                  <h3>Add<br />Resume</h3>
+                  <h3>
+                    Add
+                    <br />
+                    Resume
+                  </h3>
                 </div>
-                  )
-              }
+              )}
               <div className="choose-btn">
                 <h3>
                   {this.state.profileData.resume ? "Update" : "Add"} Resume
@@ -288,18 +301,20 @@ class EditProfile extends Component {
                 onChange={e => this.uploadFile(e)}
               />
             </div>
-            
+
             <div className="clearfix" />
 
             {/* Profile Form */}
             <form onSubmit={this.handleEditProfile}>
-
-              <FormGroup controlId="isActive" >
-                <ControlLabel bsClass="control-label isActive">Profile Activated</ControlLabel>
-                <Checkbox 
+              <FormGroup controlId="isActive">
+                <ControlLabel bsClass="control-label isActive">
+                  Profile Activated
+                </ControlLabel>
+                <Checkbox
                   checked={!!this.state.profileData.isActive}
                   onChange={this.handleCheckbox}
-                  readOnly />
+                  readOnly
+                />
               </FormGroup>
 
               <FormGroup
@@ -308,8 +323,10 @@ class EditProfile extends Component {
               >
                 <ControlLabel>
                   First Name
-                  <span 
-                    className={`helper helper-asterisk ${this.state.firstNameValid && "helper-asterisk-red"}`}>
+                  <span
+                    className={`helper helper-asterisk ${this.state
+                      .firstNameValid && "helper-asterisk-red"}`}
+                  >
                     *
                   </span>
                 </ControlLabel>
@@ -334,8 +351,10 @@ class EditProfile extends Component {
               >
                 <ControlLabel>
                   Last Name
-                  <span 
-                    className={`helper helper-asterisk ${this.state.lastNameValid && "helper-asterisk-red"}`}>
+                  <span
+                    className={`helper helper-asterisk ${this.state
+                      .lastNameValid && "helper-asterisk-red"}`}
+                  >
                     *
                   </span>
                 </ControlLabel>
@@ -360,8 +379,10 @@ class EditProfile extends Component {
               >
                 <ControlLabel>
                   Year of Graduation
-                  <span 
-                    className={`helper helper-asterisk ${this.state.yearOfGradValid && "helper-asterisk-red"}`}>
+                  <span
+                    className={`helper helper-asterisk ${this.state
+                      .yearOfGradValid && "helper-asterisk-red"}`}
+                  >
                     *
                   </span>
                 </ControlLabel>
@@ -421,9 +442,7 @@ class EditProfile extends Component {
               </FormGroup>
 
               <FormGroup controlId="phone">
-                <ControlLabel>
-                  Phone Number
-                </ControlLabel>
+                <ControlLabel>Phone Number</ControlLabel>
                 <FormControl
                   type="text"
                   placeholder="Phone Number: XXX-XXX-XXXX"
@@ -445,8 +464,10 @@ class EditProfile extends Component {
               >
                 <ControlLabel>
                   Email
-                  <span 
-                    className={`helper helper-asterisk ${this.state.emailValid && "helper-asterisk-red"}`}>
+                  <span
+                    className={`helper helper-asterisk ${this.state
+                      .emailValid && "helper-asterisk-red"}`}
+                  >
                     *
                   </span>
                 </ControlLabel>
@@ -459,6 +480,34 @@ class EditProfile extends Component {
                       profileData: {
                         ...this.state.profileData,
                         email: e.target.value
+                      }
+                    })
+                  }
+                />
+              </FormGroup>
+
+              <FormGroup
+                controlId="password"
+                validationState={this.state.passwordValid}
+              >
+                <ControlLabel>
+                  Password
+                  <span
+                    className={`helper helper-asterisk ${this.state
+                      .passwordValid && "helper-asterisk-red"}`}
+                  >
+                    *
+                  </span>
+                </ControlLabel>
+                <FormControl
+                  type="password"
+                  placeholder="password"
+                  value={this.state.profileData.password}
+                  onChange={e =>
+                    this.setState({
+                      profileData: {
+                        ...this.state.profileData,
+                        password: e.target.value
                       }
                     })
                   }
