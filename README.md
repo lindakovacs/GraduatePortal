@@ -10,6 +10,7 @@ A place for potential employers to discover and connect to AlbanyCanCode's gradu
 - Simona "simi" Asaro
 - Matt Bitley
 - Patrick Gorman
+- Nikita Thomas
 - Stephanie Wyatt
 - Ramon Vazquez
 - Kishon Grant
@@ -25,4 +26,3 @@ Use the package manager [yarn](https://yarnpkg.com/en/docs/install) to install G
 ```bash
 brew install yarn
 ```
-
