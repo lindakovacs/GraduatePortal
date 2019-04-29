@@ -138,53 +138,37 @@ class EditProfile extends Component {
     e.target.src = noPic;
   }
 
+  handleSetProfileData(id) {
+    let profile = this.props.profiles.find(profile => profile._id === id);
+    this.setState({
+      profileData: {
+        _id: id,
+        firstName: profile.firstName,
+        lastName: profile.lastName,
+        // convert skills to a string
+        skills: profile.skills.join(", "),
+        github: profile.links.github,
+        linkedin: profile.links.linkedin,
+        email: profile.links.email,
+        website: profile.links.website,
+        phone: profile.phone,
+        yearOfGrad: profile.yearOfGrad,
+        image: profile.image,
+        resume: profile.resume,
+        story: profile.story,
+        isActive: profile.isActive
+      }
+    });
+  }
+
   componentDidMount() {
     let id = this.state.graduateId;
     if (!this.props.profiles) {
       this.props.fetchAllProfiles().then(() => {
-        this.setState({
-          profileData: {
-            _id: id,
-            firstName: this.props.profiles[id].firstName,
-            lastName: this.props.profiles[id].lastName,
-            // convert skills to a string
-            skills: this.props.profiles[id].skills.join(", "),
-            github: this.props.profiles[id].links.github,
-            linkedin: this.props.profiles[id].links.linkedin,
-            email: this.props.profiles[id].links.email,
-            website: this.props.profiles[id].links.website,
-            phone: this.props.profiles[id].phone,
-            yearOfGrad: this.props.profiles[id].yearOfGrad,
-            image: this.props.profiles[id].image,
-            resume: this.props.profiles[id].resume,
-            story: this.props.profiles[id].story,
-            isActive: this.props.profiles[id].isActive
-          }
-        });
+        this.handleSetProfileData(id);
       });
     } else {
-      console.log(id);
-      console.log(this.props.profiles);
-      let profile = this.props.profiles.find(profile => profile._id === id);
-      this.setState({
-        profileData: {
-          _id: id,
-          firstName: profile.firstName,
-          lastName: profile.lastName,
-          // convert skills to a string
-          skills: profile.skills.join(", "),
-          github: profile.links.github,
-          linkedin: profile.links.linkedin,
-          email: profile.links.email,
-          website: profile.links.website,
-          phone: profile.phone,
-          yearOfGrad: profile.yearOfGrad,
-          image: profile.image,
-          resume: profile.resume,
-          story: profile.story,
-          isActive: profile.isActive
-        }
-      });
+      this.handleSetProfileData(id);
     }
   }
 
