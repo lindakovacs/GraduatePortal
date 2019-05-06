@@ -32,7 +32,7 @@ function Registration(props) {
   const newuserlinkhashgenerator = () => {
     let hash = "";
     let characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!$&*";
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!$*";
     let charactersLength = characters.length;
     for (let i = 0; i < 32; i++) {
       hash += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -43,9 +43,16 @@ function Registration(props) {
   };
 
   const registrationlinkcheck = () => {
-    if (isNaN(parseInt(registrationhash.slice(32)))) {
+    let expirationlimitinDays = 2;
+    if (
+      isNaN(parseInt(registrationhash.slice(32))) ||
+      registrationhash.slice(32).length !== 13
+    ) {
       setInvalidregistrationlink(true);
-    } else if (Date.now() - parseInt(registrationhash.slice(32)) > 604800000) {
+    } else if (
+      Date.now() - parseInt(registrationhash.slice(32)) >
+      expirationlimitinDays * 86400000
+    ) {
       setLinkvalidity(false);
     }
   };
@@ -55,7 +62,6 @@ function Registration(props) {
   }, []);
 
   console.log("hash from url:", registrationhash);
-  console.log("generated hash:", newuserlinkhashgenerator());
 
   return (
     <div className="login container text-center">
