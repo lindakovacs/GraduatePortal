@@ -39,9 +39,7 @@ class Search extends Component {
 
     const newProfiles = this.state.profiles.map(profile => {
       if (profile._id.toString() === id.toString()) {
-        // profile.isActive = Math.abs(profile.isActive - 1);
         profile.isActive = !(profile.isActive);
-        console.log("From handleActivation. TypeOf =", typeof profile.isActive, profile.isActive);
         return profile;
       }
       return profile;
