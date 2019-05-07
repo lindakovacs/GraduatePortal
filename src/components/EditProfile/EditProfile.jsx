@@ -40,6 +40,10 @@ class EditProfile extends Component {
       email: "",
       // added password to state
       password: "",
+      // added confirmPassword
+      confirmPassword: "",
+      // added passWordError
+      passwordError: "",
       website: "",
       phone: "",
       yearOfGrad: "",
@@ -56,6 +60,20 @@ class EditProfile extends Component {
     passwordValid: null
   };
 
+  // Setting Password with regexp
+  passwordvalidation = () => {
+    let regexp = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,99}$/;
+    if (this.state.password.match(regexp)) {
+      if (this.state.password === this.state.confirmedpassword) {
+        return true;
+      } else {
+        this.setState({ passwordError: "Passwords don't match" });
+      }
+    } else {
+      this.setState({ passwordError: "Password doesn't meet requirements" });
+    }
+  };
+
   handleEditProfile = e => {
     e.preventDefault();
 
@@ -66,7 +84,9 @@ class EditProfile extends Component {
       ["yearOfGrad", "yearOfGradValid"],
       ["email", "emailValid"],
       // added password Validation
-      ["password", "passwordValid"]
+      ["password", "passwordValid"],
+      // confirm password valiudation
+      ["confirmPassword", "confirmPasswordValid"]
     ];
     for (let key of requiredArray) {
       if (!this.state.profileData[key[0]]) {
@@ -157,8 +177,10 @@ class EditProfile extends Component {
             github: this.props.profiles[id].links.github,
             linkedin: this.props.profiles[id].links.linkedin,
             email: this.props.profiles[id].links.email,
-           // added password tp props.profiles 
+            // added password to props.profiles
             password: this.props.profiles[id].password,
+            // added confrimPassword to props.profiles
+            confirmPassword: this.props.profiles[id].confirmedpassword,
             website: this.props.profiles[id].links.website,
             phone: this.props.profiles[id].phone,
             yearOfGrad: this.props.profiles[id].yearOfGrad,
@@ -185,6 +207,8 @@ class EditProfile extends Component {
           email: profile.links.email,
           // added password to profile
           password: profile.password,
+          // added confirmPassword to profile
+          confirmPassword: profile.confirmPassword,
           website: profile.links.website,
           phone: profile.phone,
           yearOfGrad: profile.yearOfGrad,
@@ -514,6 +538,34 @@ class EditProfile extends Component {
                 />
               </FormGroup>
 
+              <FormGroup
+                controlId="confirmPassword"
+                validationState={this.state.confirmPasswordValid}
+              >
+                <ControlLabel>
+                  Confirm Password
+                  <span
+                    className={`helper helper-asterisk ${this.state
+                      .confirmPasswordValid && "helper-asterisk-red"}`}
+                  >
+                    *
+                  </span>
+                </ControlLabel>
+                <FormControl
+                  type="password"
+                  placeholder="confirm-password"
+                  value={this.state.profileData.confirmPassword}
+                  onChange={e =>
+                    this.setState({
+                      profileData: {
+                        ...this.state.profileData,
+                        confirmPassword: e.target.value
+                      }
+                    })
+                  }
+                />
+              </FormGroup>
+
               <FormGroup controlId="linkedin">
                 <ControlLabel>LinkedIn</ControlLabel>
                 <FormControl
@@ -569,6 +621,7 @@ class EditProfile extends Component {
                 type="submit"
                 className="btn grad-btn grad-btn-admin grad-btn-admin-submit"
                 disabled={this.props.isLoading === true}
+                // onClick={() => passwordvalidation()}
               >
                 {this.props.isLoading ? "LOADING..." : "UPDATE"}
               </Button>
