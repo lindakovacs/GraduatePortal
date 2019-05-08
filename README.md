@@ -30,7 +30,7 @@ brew install yarn
 
 ## Credits
 
-- Instruction and backend contributions provided by [Matina Patsos](https://github.com/matinaspatsos) and [Jamal Taylor](https://github.com/Louis345)
+Instruction and backend contributions provided by [Matina Patsos](https://github.com/matinaspatsos) and [Jamal Taylor](https://github.com/Louis345)
 
 Thank you for your guidance
 
