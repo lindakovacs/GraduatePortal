@@ -26,10 +26,11 @@ brew install yarn
 - [Matthew Holland](https://github.com/matthew-holland)
 - [Linda Kovacs](https://github.com/lindakovacs)
 - [Ahmad Hijazi](https://github.com/AHijazi11)
+- [Steve Osuchowski](https://github.com/SteveO1138)
 
 ## Credits
 
-- Instruction and Backend contributions provided by [Matina Patsos](https://github.com/matinaspatsos) and [Jamal Taylor](https://github.com/Louis345)
+- Instruction and backend contributions provided by [Matina Patsos](https://github.com/matinaspatsos) and [Jamal Taylor](https://github.com/Louis345)
 
 Thank you for your guidance
 
