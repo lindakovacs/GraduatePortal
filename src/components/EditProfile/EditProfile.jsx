@@ -163,6 +163,33 @@ class EditProfile extends Component {
     e.target.src = noPic;
   }
 
+  handleSetProfileData(id) {
+    let profile = this.props.profiles.find(profile => profile._id === id);
+    this.setState({
+      profileData: {
+        _id: id,
+        firstName: profile.firstName,
+        lastName: profile.lastName,
+        // convert skills to a string
+        skills: profile.skills.join(", "),
+        github: profile.links.github,
+        linkedin: profile.links.linkedin,
+        email: profile.links.email,
+        // added password
+        password: profile.password,
+        // added confirm password
+        confirmPassword: profile.confirmPassword,
+        website: profile.links.website,
+        phone: profile.phone,
+        yearOfGrad: profile.yearOfGrad,
+        image: profile.image,
+        resume: profile.resume,
+        story: profile.story,
+        isActive: profile.isActive
+      }
+    });
+  }
+
   componentDidMount() {
     let id = this.state.graduateId;
     if (!this.props.profiles) {
@@ -621,7 +648,7 @@ class EditProfile extends Component {
                 type="submit"
                 className="btn grad-btn grad-btn-admin grad-btn-admin-submit"
                 disabled={this.props.isLoading === true}
-                // onClick={() => passwordvalidation()}
+                onClick={() => this.passwordvalidation()}
               >
                 {this.props.isLoading ? "LOADING..." : "UPDATE"}
               </Button>
