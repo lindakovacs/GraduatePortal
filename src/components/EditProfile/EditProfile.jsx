@@ -28,6 +28,8 @@ class EditProfile extends Component {
     graduateId: this.props.match.params.graduateId,
     isNew: false,
     isAdmin: true,
+    // added isGrad field
+    isGrad: false,
     isLoading: false,
     hasError: false,
     profileData: {
@@ -61,7 +63,7 @@ class EditProfile extends Component {
   };
 
   // Setting Password with regexp
-  passwordvalidation = () => {
+  passwordValidation = () => {
     let regexp = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,99}$/;
     if (this.state.password.match(regexp)) {
       if (this.state.password === this.state.confirmedpassword) {
@@ -268,6 +270,19 @@ class EditProfile extends Component {
                 </Button>
               </LinkContainer>
             )}
+            {/* if isGrad is true then the add profile button will not render */}
+            {this.props.isGrad &&
+              !(
+                <LinkContainer to="/profile/add">
+                  <Button
+                    className="grad-btn grad-btn-admin add-btn"
+                    title="Add new graduate profile"
+                    bsSize="small"
+                  >
+                    +
+                  </Button>
+                </LinkContainer>
+              )}
           </header>
         </div>
 
@@ -648,7 +663,7 @@ class EditProfile extends Component {
                 type="submit"
                 className="btn grad-btn grad-btn-admin grad-btn-admin-submit"
                 disabled={this.props.isLoading === true}
-                onClick={() => this.passwordvalidation()}
+                onClick={() => this.passwordValidation()}
               >
                 {this.props.isLoading ? "LOADING..." : "UPDATE"}
               </Button>
