@@ -1,20 +1,43 @@
 import React, { Component } from "react";
 //import history from "../../history";
-import { Button, Modal /*ModalDialog*/ } from "react-bootstrap";
+import { Button, Modal, Form } from "react-bootstrap";
+import axios from "axios";
 
 class NewUsers extends Component {
   state = {
     showModal: false,
-    emailInput: ""
+    emailInput: "",
+    dataToSend: {
+      emails: [],
+      isGrad: true
+    }
+  };
+
+  upload = async (url, method = "PUT") => {
+    const token = localStorage.getItem("token");
+    const data = this.state.dataToSend;
+    const response = await axios(url, {
+      method,
+      headers: {
+        Accept: "application/json",
+        Authorization: token ? `Bearer ${token}` : ""
+      },
+      data
+    });
+    return response.data;
+  };
+
+  handleClick = e => {
+    this.setState({ dataToSend: { isGrad: !this.state.dataToSend.isGrad } });
   };
 
   handleClose = () => {
     this.setState({ showModal: false });
   };
 
-  handleAddEmails(e) {
+  handleAddEmails = () => {
     this.setState({ showModal: true });
-  }
+  };
 
   handleInput = e => {
     this.setState({ emailInput: e.target.value });
@@ -74,14 +97,26 @@ class NewUsers extends Component {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <div class="form-group">
-              <textarea
-                class="form-control"
-                id="message-text"
-                onChange={e => this.handleInput(e)}
-                value={this.state.emailInput}
-              />
-            </div>
+            <form>
+              <div class="form-check">
+                <input
+                  type="checkbox"
+                  onClick={e => this.handleClick(e.target.checked)}
+                />
+                <label class="form-check-label">
+                  These new accounts will be admin accounts
+                </label>
+              </div>
+
+              <div class="form-group">
+                <textarea
+                  class="form-control"
+                  id="message-text"
+                  onChange={e => this.handleInput(e)}
+                  value={this.state.emailInput}
+                />
+              </div>
+            </form>
           </Modal.Body>
 
           <Modal.Footer>
