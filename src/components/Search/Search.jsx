@@ -147,7 +147,9 @@ class Search extends Component {
               <h1>Graduate Portal</h1>
 
               {/* Add Profile Button */}
-              {this.props.isAdmin && (
+              {/* if isGrad is not true then the add profile button will not render */}
+
+              {this.props.isAdmin && !this.props.isGrad && (
                 <LinkContainer to="/profile/add">
                   <Button
                     className="grad-btn grad-btn-admin add-btn"
@@ -158,19 +160,7 @@ class Search extends Component {
                   </Button>
                 </LinkContainer>
               )}
-              {/* if isGrad is true then the add profile button will not render */}
-              {this.props.isGrad &&
-                !(
-                  <LinkContainer to="/profile/add">
-                    <Button
-                      className="grad-btn grad-btn-admin add-btn"
-                      title="Add new graduate profile"
-                      bsSize="small"
-                    >
-                      +
-                    </Button>
-                  </LinkContainer>
-                )}
+           
             </div>
 
             {/* Filter Profiles Input */}
@@ -327,6 +317,7 @@ class Search extends Component {
 
                         {/* Active/Inactive Button */}
                         {this.props.isAdmin &&
+                          !this.props.isGrad &&
                           (graduate.isActive ? (
                             <Button
                               className="grad-btn grad-btn-admin-active"
@@ -348,34 +339,9 @@ class Search extends Component {
                               <span>InActive</span>
                             </Button>
                           ))}
-                        {/* if isGrad is true the Active/Inactive button wont render */}
-                        {this.props.isGrad &&
-                          (graduate.isActive
-                            ? !(
-                                <Button
-                                  className="grad-btn grad-btn-admin-active"
-                                  bsSize="small"
-                                  onClick={e =>
-                                    this.handleActivation(e, graduate._id)
-                                  }
-                                >
-                                  <span>Active</span>
-                                </Button>
-                              )
-                            : !(
-                                <Button
-                                  className="grad-btn grad-btn-admin-inactive"
-                                  bsSize="small"
-                                  onClick={e =>
-                                    this.handleActivation(e, graduate._id)
-                                  }
-                                >
-                                  <span>InActive</span>
-                                </Button>
-                              ))}
 
                         {/* Edit Profile Button */}
-                        {this.props.isAdmin && (
+                        {this.props.isAdmin && !this.props.isGrad && (
                           <LinkContainer to={`/profile/${graduate._id}/edit`}>
                             <Button
                               className="grad-btn grad-btn-admin"

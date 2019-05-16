@@ -64,9 +64,10 @@ class EditProfile extends Component {
 
   // Setting Password with regexp
   passwordValidation = () => {
+    const { password, confirmPassword } = this.state;
     let regexp = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,99}$/;
-    if (this.state.password.match(regexp)) {
-      if (this.state.password === this.state.confirmedpassword) {
+    if (password.match(regexp)) {
+      if (password === confirmPassword) {
         return true;
       } else {
         this.setState({ passwordError: "Passwords don't match" });
@@ -259,7 +260,9 @@ class EditProfile extends Component {
             <h1>Edit Graduate Profile</h1>
 
             {/* Add Profile Button */}
-            {this.props.isAdmin && (
+            {/* if isGrad is not true then the add profile button will not render */}
+
+            {this.props.isAdmin && !this.props.isGrad && (
               <LinkContainer to="/profile/add">
                 <Button
                   className="grad-btn grad-btn-admin add-btn"
@@ -270,19 +273,7 @@ class EditProfile extends Component {
                 </Button>
               </LinkContainer>
             )}
-            {/* if isGrad is true then the add profile button will not render */}
-            {this.props.isGrad &&
-              !(
-                <LinkContainer to="/profile/add">
-                  <Button
-                    className="grad-btn grad-btn-admin add-btn"
-                    title="Add new graduate profile"
-                    bsSize="small"
-                  >
-                    +
-                  </Button>
-                </LinkContainer>
-              )}
+      
           </header>
         </div>
 
