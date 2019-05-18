@@ -1,14 +1,17 @@
 import { connect } from "react-redux";
 import Registration from "./Registration";
-import {} from "./RegistrationActions";
+import { registernewUser } from "./RegistrationActions";
 
-function mapStateToProps(dummy) {
+function mapStateToProps(state) {
   return {
-    dummy
+    ...state.Registration
   };
 }
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+  registernewUser: (username, password) =>
+    dispatch(registernewUser(username, password))
+});
 
 export default connect(
   mapStateToProps,

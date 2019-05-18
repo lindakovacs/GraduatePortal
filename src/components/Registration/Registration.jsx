@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { FormGroup, FormControl, Button, InputGroup } from "react-bootstrap";
 import ErrorMessage from "../Widgets/ErrorMessage";
 import "./Registration.css";
@@ -7,69 +7,10 @@ function Registration(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showpassword, setShowpassword] = useState(false);
-  const [showconfirmedpassword, setShowconfirmedpassword] = useState(false);
-  const [confirmedpassword, setConfirmedpassword] = useState("");
-  const [passworderror, setPassworderror] = useState("");
-  const [linkvalidity, setLinkvalidity] = useState(true);
-  const [invalidregistrationlink, setInvalidregistrationlink] = useState(false);
-
-  const registrationhash = props.match.params.hash;
-
-  const passwordvalidation = () => {
-    setPassworderror("");
-    let regexp = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,99}$/;
-    if (password.match(regexp)) {
-      if (password === confirmedpassword) {
-        return true;
-      } else {
-        setPassworderror("Passwords don't match");
-      }
-    } else {
-      setPassworderror("Password doesn't meet requirements");
-    }
-  };
-
-  const newuserlinkhashgenerator = () => {
-    let hash = "";
-    let characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!$*";
-    let charactersLength = characters.length;
-    for (let i = 0; i < 32; i++) {
-      hash += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    let timestamp = Date.now();
-    hash += timestamp;
-    return hash;
-  };
-
-  const registrationlinkcheck = () => {
-    let expirationlimitinDays = 2;
-    if (
-      isNaN(parseInt(registrationhash.slice(32))) ||
-      registrationhash.slice(32).length !== 13
-    ) {
-      setInvalidregistrationlink(true);
-    } else if (
-      Date.now() - parseInt(registrationhash.slice(32)) >
-      expirationlimitinDays * 86400000
-    ) {
-      setLinkvalidity(false);
-    }
-  };
-
-  useEffect(() => {
-    registrationlinkcheck();
-  }, []);
-
-  console.log("hash from url:", registrationhash);
 
   return (
     <div className="login container text-center">
-      {invalidregistrationlink ? (
-        <ErrorMessage>
-          <h1>Registration Link Invalid</h1>
-        </ErrorMessage>
-      ) : linkvalidity ? (
+      {
         <form className="panel" onSubmit={e => e.preventDefault()}>
           <header className="panel-body">
             <h2>New User Registration</h2>
@@ -88,12 +29,11 @@ function Registration(props) {
               <InputGroup>
                 <FormControl
                   type={showpassword ? "text" : "password"}
-                  placeholder="Password"
-                  aria-label="Password"
+                  placeholder="Temporary Password"
+                  aria-label="Temporary Password"
                   value={password}
                   onChange={e => {
                     setPassword(e.target.value);
-                    setPassworderror("");
                   }}
                 />
                 <InputGroup.Addon>
@@ -106,67 +46,28 @@ function Registration(props) {
                 </InputGroup.Addon>
               </InputGroup>
             </FormGroup>
-            <FormGroup controlId="password-confirmation">
-              <InputGroup>
-                <FormControl
-                  type={showconfirmedpassword ? "text" : "password"}
-                  placeholder="Confirm Password"
-                  aria-label="Password"
-                  value={confirmedpassword}
-                  onChange={e => setConfirmedpassword(e.target.value)}
-                />
-                <InputGroup.Addon>
-                  <input
-                    type="checkbox"
-                    aria-label="Show"
-                    className="login-input"
-                    onClick={() =>
-                      setShowconfirmedpassword(!showconfirmedpassword)
-                    }
-                  />
-                </InputGroup.Addon>
-              </InputGroup>
-            </FormGroup>
-            <div className="text-left">
-              <p>
-                <b>Password Requirements:</b>
-              </p>
-              <ul>
-                <li>Minimum 6 characters</li>
-                <li>At least one uppercase letter</li>
-                <li>At least one lowercase letter</li>
-                <li>At least one number</li>
-                <li>At least one special character</li>
-              </ul>
-            </div>
-            {passworderror && <ErrorMessage>{passworderror}</ErrorMessage>}
             <Button
               type="submit"
               className="btn acc-btn acc-btn-primary login-btn"
-              onClick={() => passwordvalidation()}
+              onClick={async () =>
+                await props.registernewUser(username, password).then(() => {
+                  if (props.isLoading === false && props.hasError === false) {
+                    props.history.push("/profile/add");
+                  }
+                })
+              }
               disabled={props.isLoading === true}
             >
               {props.isLoading ? "LOADING ..." : "SIGN UP"}
             </Button>
-            {props.isLoginInvalid && (
-              <ErrorMessage errorData="login-error">
-                Your email does not match what we have in our records.
-              </ErrorMessage>
-            )}
             {props.hasError && (
               <ErrorMessage errorData="login-error">
-                Sorry! The Graduate Portal is temporarily down. Our engineers
-                are aware of the problem and are hard at work trying to fix it.
-                Please come back later.
+                {props.errorMessage}
               </ErrorMessage>
             )}
           </main>
         </form>
-      ) : (
-        <ErrorMessage>
-          <h1>Registration Link Expired</h1>
-        </ErrorMessage>
-      )}
+      }
     </div>
   );
 }

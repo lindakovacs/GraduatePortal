@@ -29,7 +29,7 @@ function App() {
           path="/profile/:graduateId"
           component={ViewProfileContainer}
         />
-        <Route path="/register/:hash" component={RegistrationContainer} />
+        <Route path="/register" component={RegistrationContainer} />
         <Redirect to="/" />
       </Switch>
       <Footer />

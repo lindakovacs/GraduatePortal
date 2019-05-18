@@ -4,18 +4,33 @@ const RegistrationReducer = (
   state = {
     isLoading: false,
     hasError: false,
-    hash: null
+    token: null,
+    errorMessage: null
   },
   action
 ) => {
   switch (action.type) {
-    case types.NEW_PROFILE_FULFILLED:
-      const { graduateId } = action.payload;
+    case types.NEW_USER_REGISTER_FULFILLED:
+      const { token } = action.payload;
       return {
         ...state,
         isLoading: false,
         hasError: false,
-        graduateId
+        token
+      };
+    case types.NEW_USER_REGISTER_PENDING:
+      return {
+        ...state,
+        isLoading: true,
+        hasError: false
+      };
+    case types.NEW_USER_REGISTER_REJECTED:
+      const { message } = action.payload.response.data;
+      return {
+        ...state,
+        isLoading: false,
+        hasError: true,
+        errorMessage: message
       };
     default:
       return state;
