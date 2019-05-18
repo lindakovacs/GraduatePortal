@@ -18,17 +18,17 @@ class NavBar extends Component {
               </a>
             </Navbar.Brand>
             {/* Toggle button for mobile isn't necessary for non-admins */}
-            {this.props.isAdmin && <Navbar.Toggle />}
+            {this.props.isAdmin || (this.props.isGrad && <Navbar.Toggle />)}
           </Navbar.Header>
 
-          {/* Show extra features for admins */}
-          {this.props.isAdmin ? (
+          {/* Show extra features for admins & Grads */}
+          {this.props.isAdmin || this.props.isGrad ? (
             <Navbar.Collapse>
               <Nav pullRight>
                 <LinkContainer exact to="/" className="acc-link">
                   <NavItem eventKey={1}>SEARCH</NavItem>
                 </LinkContainer>
-                <NavItem
+                <NavItem 
                   className="acc-link"
                   href="#"
                   eventKey={2}
