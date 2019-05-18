@@ -59,7 +59,8 @@ class EditProfile extends Component {
     yearOfGradValid: null,
     emailValid: null,
     submitForm: false,
-    passwordValid: null
+    passwordValid: null,
+    confirmPasswordValid: null
   };
 
   // Setting Password with regexp

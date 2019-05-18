@@ -25,6 +25,8 @@ class NewProfile extends Component {
   state = {
     isNew: true,
     isAdmin: true,
+    // added isGrad field
+    isGrad: false,
     hasError: false,
     isActive: true,
     profileData: {
@@ -34,6 +36,12 @@ class NewProfile extends Component {
       skills: "",
       story: "",
       phone: "",
+      // added password to state
+      password: "",
+      // added confirmPassword
+      confirmPassword: "",
+      // added passWordError
+      passwordError: "",
       email: "",
       linkedin: "",
       github: "",
@@ -46,7 +54,24 @@ class NewProfile extends Component {
     lastNameValid: null,
     yearOfGradValid: null,
     emailValid: null,
-    submitForm: false
+    submitForm: false,
+    passwordValid: null,
+    confirmPasswordValid: null
+  };
+
+  // Setting Password with regexp
+  passwordValidation = () => {
+    const { password, confirmPassword } = this.state;
+    let regexp = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,99}$/;
+    if (password.match(regexp)) {
+      if (password === confirmPassword) {
+        return true;
+      } else {
+        this.setState({ passwordError: "Passwords don't match" });
+      }
+    } else {
+      this.setState({ passwordError: "Password doesn't meet requirements" });
+    }
   };
 
   onChangeInput = e => {
@@ -66,7 +91,11 @@ class NewProfile extends Component {
       ["firstName", "firstNameValid"],
       ["lastName", "lastNameValid"],
       ["yearOfGrad", "yearOfGradValid"],
-      ["email", "emailValid"]
+      ["email", "emailValid"],
+      // added password Validation
+      ["password", "passwordValid"],
+      // confirm password valiudation
+      ["confirmPassword", "confirmPasswordValid"]
     ];
     for (let key of requiredArray) {
       if (!this.state.profileData[key[0]]) {
@@ -196,13 +225,18 @@ class NewProfile extends Component {
                 />
               ) : (
                 <div className="missing-btn">
-                  <h3>Add<br />Image</h3>
+                  <h3>
+                    Add
+                    <br />
+                    Image
+                  </h3>
                 </div>
               )}
               <div className="choose-btn">
                 <h3>
                   {this.state.profileData.image ? "Update" : "Add"}
-                  <br />Image
+                  <br />
+                  Image
                 </h3>
               </div>
               <FieldGroup
@@ -215,18 +249,22 @@ class NewProfile extends Component {
 
             {/* Profile Resume */}
             <div className="form-resume">
-            {this.state.profileData.resume ?
-              <img 
-                src={resumeIcon}
-                width={100}
-                height={100}
-                alt="Resume icon" />
-              : (
+              {this.state.profileData.resume ? (
+                <img
+                  src={resumeIcon}
+                  width={100}
+                  height={100}
+                  alt="Resume icon"
+                />
+              ) : (
                 <div className="missing-btn">
-                  <h3>Add<br />Resume</h3>
+                  <h3>
+                    Add
+                    <br />
+                    Resume
+                  </h3>
                 </div>
-                  )
-              }
+              )}
               <div className="choose-btn">
                 <h3>
                   {this.state.profileData.resume ? "Update" : "Add"} Resume
@@ -249,8 +287,10 @@ class NewProfile extends Component {
               >
                 <ControlLabel>
                   First Name
-                  <span 
-                    className={`helper helper-asterisk ${this.state.firstNameValid && "helper-asterisk-red"}`}>
+                  <span
+                    className={`helper helper-asterisk ${this.state
+                      .firstNameValid && "helper-asterisk-red"}`}
+                  >
                     *
                   </span>
                 </ControlLabel>
@@ -268,8 +308,10 @@ class NewProfile extends Component {
               >
                 <ControlLabel>
                   Last Name
-                  <span 
-                    className={`helper helper-asterisk ${this.state.lastNameValid && "helper-asterisk-red"}`}>
+                  <span
+                    className={`helper helper-asterisk ${this.state
+                      .lastNameValid && "helper-asterisk-red"}`}
+                  >
                     *
                   </span>
                 </ControlLabel>
@@ -287,8 +329,10 @@ class NewProfile extends Component {
               >
                 <ControlLabel>
                   Year of Graduation
-                  <span 
-                    className={`helper helper-asterisk ${this.state.yearOfGradValid && "helper-asterisk-red"}`}>
+                  <span
+                    className={`helper helper-asterisk ${this.state
+                      .yearOfGradValid && "helper-asterisk-red"}`}
+                  >
                     *
                   </span>
                 </ControlLabel>
@@ -343,8 +387,10 @@ class NewProfile extends Component {
               >
                 <ControlLabel>
                   Email
-                  <span 
-                    className={`helper helper-asterisk ${this.state.emailValid && "helper-asterisk-red"}`}>
+                  <span
+                    className={`helper helper-asterisk ${this.state
+                      .emailValid && "helper-asterisk-red"}`}
+                  >
                     *
                   </span>
                 </ControlLabel>
@@ -355,6 +401,61 @@ class NewProfile extends Component {
                   name="email"
                   onChange={this.onChangeInput}
                 />
+                <FormGroup
+                  controlId="password"
+                  validationState={this.state.passwordValid}
+                >
+                  <ControlLabel>
+                    Password
+                    <span
+                      className={`helper helper-asterisk ${this.state
+                        .passwordValid && "helper-asterisk-red"}`}
+                    >
+                      *
+                    </span>
+                  </ControlLabel>
+                  <FormControl
+                    type="password"
+                    placeholder="password"
+                    value={this.state.profileData.password}
+                    onChange={e =>
+                      this.setState({
+                        profileData: {
+                          ...this.state.profileData,
+                          password: e.target.value
+                        }
+                      })
+                    }
+                  />
+                </FormGroup>
+
+                <FormGroup
+                  controlId="confirmPassword"
+                  validationState={this.state.confirmPasswordValid}
+                >
+                  <ControlLabel>
+                    Confirm Password
+                    <span
+                      className={`helper helper-asterisk ${this.state
+                        .confirmPasswordValid && "helper-asterisk-red"}`}
+                    >
+                      *
+                    </span>
+                  </ControlLabel>
+                  <FormControl
+                    type="password"
+                    placeholder="confirm-password"
+                    value={this.state.profileData.confirmPassword}
+                    onChange={e =>
+                      this.setState({
+                        profileData: {
+                          ...this.state.profileData,
+                          confirmPassword: e.target.value
+                        }
+                      })
+                    }
+                  />
+                </FormGroup>
               </FormGroup>
               <FormGroup controlId="linkedin">
                 <ControlLabel>LinkedIn</ControlLabel>
@@ -389,6 +490,7 @@ class NewProfile extends Component {
                 type="submit"
                 className="btn grad-btn grad-btn-admin grad-btn-admin-submit"
                 disabled={this.props.isLoading === true}
+                onclick={() => this.passwordValidation()}
               >
                 {this.props.isLoading ? "LOADING..." : "ADD"}
               </Button>
