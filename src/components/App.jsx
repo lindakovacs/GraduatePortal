@@ -9,6 +9,7 @@ import SearchContainer from "./Search/SearchContainer";
 import ViewProfileContainer from "./ViewProfile/ViewProfileContainer";
 import NewProfileContainer from "./NewProfile/NewProfileContainer";
 import EditProfileContainer from "./EditProfile/EditProfileContainer";
+import RegistrationContainer from "./Registration/RegistrationContainer";
 
 function App() {
   return (
@@ -18,8 +19,17 @@ function App() {
         <Route exact path="/" component={SearchContainer} />
         <Route exact path="/login" component={LoginContainer} />
         <Route exact path="/profile/add" component={NewProfileContainer} />
-        <Route exact path="/profile/:graduateId/edit" component={EditProfileContainer} />
-        <Route exact path="/profile/:graduateId" component={ViewProfileContainer} />
+        <Route
+          exact
+          path="/profile/:graduateId/edit"
+          component={EditProfileContainer}
+        />
+        <Route
+          exact
+          path="/profile/:graduateId"
+          component={ViewProfileContainer}
+        />
+        <Route path="/register" component={RegistrationContainer} />
         <Redirect to="/" />
       </Switch>
       <Footer />
