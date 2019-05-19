@@ -10,6 +10,7 @@ import ViewProfileContainer from "./ViewProfile/ViewProfileContainer";
 import NewProfileContainer from "./NewProfile/NewProfileContainer";
 import EditProfileContainer from "./EditProfile/EditProfileContainer";
 import NewUsersContainer from "./CreateNewUsers/NewUsersContainer";
+import Modal from "./Modal";
 
 function App() {
   return (

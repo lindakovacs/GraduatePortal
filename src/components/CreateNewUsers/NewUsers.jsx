@@ -2,6 +2,8 @@ import React, { Component } from "react";
 //import history from "../../history";
 import { Button, Modal, Form } from "react-bootstrap";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 class NewUsers extends Component {
   state = {
@@ -39,6 +41,8 @@ class NewUsers extends Component {
     this.setState({ showModal: true });
   };
 
+  notify = () => toast("Wow so easy !");
+
   handleInput = e => {
     this.setState({ emailInput: e.target.value });
   };
@@ -62,15 +66,15 @@ class NewUsers extends Component {
     }
 
     if (trimmedArray.length === 1 && numberOfAts === 1) {
-      alert("Thank you!");
+      //alert success
+
+      this.notify();
       this.setState({ showModal: false });
       //submitEmails(trimmedArray);
     } else if (numberOfAts - numberOfCommas !== 1) {
-      alert(
-        "Please check input. Make sure email addresses are separated by a comma."
-      );
+      //alert input error
     } else {
-      alert("Thank you!");
+      //alert it went ok
       this.setState({ showModal: false });
       //submitEmails(trimmedArray);
     }
@@ -78,12 +82,33 @@ class NewUsers extends Component {
 
   // submitEmails = emailArray => {};
 
+  // successToast = () => toast("Everything went great!", { autoClose: 7000 });
+  // badInputToast = () =>
+  //   toast(
+  //     "Please check your input to ensure each email address is separated by a comma",
+  //     { autoClose: 7000 }
+  //   );
+  // serverErrorToast = () =>
+  //   toast("We encountered an error communicating with the server.", {
+  //     autoClose: 7000
+  //   });
+
   render() {
     return (
       <div>
-        <Button variant="primary" onClick={e => this.handleAddEmails(e)}>
-          Add email addresses
-        </Button>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnVisibilityChange
+          draggable
+          pauseOnHover
+        />
+
+        <Button onClick={e => this.handleAddEmails(e)}>Add users</Button>
 
         <Modal
           show={this.state.showModal}
@@ -98,7 +123,7 @@ class NewUsers extends Component {
           </Modal.Header>
           <Modal.Body>
             <form>
-              <div class="form-check">
+              <div class="form-group form-check">
                 <input
                   type="checkbox"
                   onClick={e => this.handleClick(e.target.checked)}
