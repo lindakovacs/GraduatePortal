@@ -30,7 +30,6 @@ const upload = (url, image = null, method = "PUT") => {
   }).then(response => response.data);
 };
 
-
 // Login, Fetch All Profiles, New & Edit Profile use the "send" AJAX call
 // ----------------------------------------------------------------------
 export const loginRequest = (username, password) => {
@@ -72,6 +71,27 @@ export const uploadImageRequest = data => {
 
 export const uploadResumeRequest = data => {
   return upload(`${api}/upload/resume`, data).then(response => {
+    if (response.token) localStorage.token = response.token;
+    return response;
+  });
+};
+
+// Create pending users
+// --------------------------------------------------
+export const newuserCreation = newusers => {
+  return send(`${api}/users/new`, newusers).then(response => {
+    if (response.token) localStorage.token = response.token;
+    return response;
+  });
+};
+
+// Register new user
+// --------------------------------------------------
+export const newuserRegister = (email, temppassword) => {
+  return send(`${api}/user/reg-form`, {
+    email: email,
+    password: temppassword
+  }).then(response => {
     if (response.token) localStorage.token = response.token;
     return response;
   });

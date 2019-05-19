@@ -39,36 +39,39 @@ class Search extends Component {
 
     const newProfiles = this.state.profiles.map(profile => {
       if (profile._id.toString() === id.toString()) {
-        profile.isActive = !(profile.isActive);
+        profile.isActive = !profile.isActive;
         return profile;
       }
       return profile;
     });
     const currentProfile = newProfiles.filter(profile => profile._id === id)[0];
 
-    this.setState({
-      profiles: newProfiles,
-      profileData: {
-        _id: currentProfile._id,
-        firstName: currentProfile.firstName,
-        lastName: currentProfile.lastName,
-        yearOfGrad: currentProfile.yearOfGrad,
-        skills: currentProfile.skills,
-        story: currentProfile.story,
-        phone: currentProfile.phone,
-        email: currentProfile.links.email,
-        linkedin: currentProfile.links.linkedin,
-        github: currentProfile.links.github,
-        website: currentProfile.links.website,
-        image: currentProfile.image,
-        resume: currentProfile.resume,
-        isActive: currentProfile.isActive
+    this.setState(
+      {
+        profiles: newProfiles,
+        profileData: {
+          _id: currentProfile._id,
+          firstName: currentProfile.firstName,
+          lastName: currentProfile.lastName,
+          yearOfGrad: currentProfile.yearOfGrad,
+          skills: currentProfile.skills,
+          story: currentProfile.story,
+          phone: currentProfile.phone,
+          email: currentProfile.links.email,
+          linkedin: currentProfile.links.linkedin,
+          github: currentProfile.links.github,
+          website: currentProfile.links.website,
+          image: currentProfile.image,
+          resume: currentProfile.resume,
+          isActive: currentProfile.isActive
+        }
+      },
+      () => {
+        console.log(this.state.profileData);
+        this.props.profileEdit(this.state.profileData);
       }
-    }, () => {
-      console.log(this.state.profileData);
-      this.props.profileEdit(this.state.profileData)
-    });
-  }
+    );
+  };
 
   filterProfiles = () => {
     // store search input for use with backward navigation
@@ -80,7 +83,7 @@ class Search extends Component {
       .trim()
       .split(" ");
 
-    // filter profiles 
+    // filter profiles
     const profiles = Object.values(this.props.profiles).filter(profile => {
       if (!this.props.isAdmin && !profile.isActive) return false;
 
@@ -91,8 +94,7 @@ class Search extends Component {
           term = term.split(" ");
         }
         return arr.concat(term);
-      },[]
-      );
+      }, []);
       let profileNames = []
         .concat(profile.firstName.toLowerCase())
         .concat(profile.lastName.toLowerCase());
@@ -156,6 +158,19 @@ class Search extends Component {
                   </Button>
                 </LinkContainer>
               )}
+              {/* if isGrad is true then the add profile button will not render */}
+              {this.props.isGrad &&
+                !(
+                  <LinkContainer to="/profile/add">
+                    <Button
+                      className="grad-btn grad-btn-admin add-btn"
+                      title="Add new graduate profile"
+                      bsSize="small"
+                    >
+                      +
+                    </Button>
+                  </LinkContainer>
+                )}
             </div>
 
             {/* Filter Profiles Input */}
@@ -209,10 +224,7 @@ class Search extends Component {
                   <div className="card" key={key}>
                     <Media>
                       <Media.Left>
-                        <Link
-                          to={viewLink}
-                          className="profile-thumbnail"
-                        >
+                        <Link to={viewLink} className="profile-thumbnail">
                           {graduate.image ? (
                             <Image
                               width={100}
@@ -314,25 +326,53 @@ class Search extends Component {
                         </LinkContainer>
 
                         {/* Active/Inactive Button */}
-                        {this.props.isAdmin && (
-                          graduate.isActive ? (
-                              <Button
-                                className="grad-btn grad-btn-admin-active"
-                                bsSize="small"
-                                onClick={(e) => this.handleActivation(e, graduate._id)}
-                              >
-                                <span>Active</span>
-                              </Button>
+                        {this.props.isAdmin &&
+                          (graduate.isActive ? (
+                            <Button
+                              className="grad-btn grad-btn-admin-active"
+                              bsSize="small"
+                              onClick={e =>
+                                this.handleActivation(e, graduate._id)
+                              }
+                            >
+                              <span>Active</span>
+                            </Button>
                           ) : (
-                              <Button
-                                className="grad-btn grad-btn-admin-inactive"
-                                bsSize="small"
-                                onClick={(e) => this.handleActivation(e, graduate._id)}
-                              >
-                                <span>InActive</span>
-                              </Button>
-                          )
-                        )}
+                            <Button
+                              className="grad-btn grad-btn-admin-inactive"
+                              bsSize="small"
+                              onClick={e =>
+                                this.handleActivation(e, graduate._id)
+                              }
+                            >
+                              <span>InActive</span>
+                            </Button>
+                          ))}
+                        {/* if isGrad is true the Active/Inactive button wont render */}
+                        {this.props.isGrad &&
+                          (graduate.isActive
+                            ? !(
+                                <Button
+                                  className="grad-btn grad-btn-admin-active"
+                                  bsSize="small"
+                                  onClick={e =>
+                                    this.handleActivation(e, graduate._id)
+                                  }
+                                >
+                                  <span>Active</span>
+                                </Button>
+                              )
+                            : !(
+                                <Button
+                                  className="grad-btn grad-btn-admin-inactive"
+                                  bsSize="small"
+                                  onClick={e =>
+                                    this.handleActivation(e, graduate._id)
+                                  }
+                                >
+                                  <span>InActive</span>
+                                </Button>
+                              ))}
 
                         {/* Edit Profile Button */}
                         {this.props.isAdmin && (
@@ -349,7 +389,6 @@ class Search extends Component {
                     </Media>
                   </div>
                 );
-                
               })
             )}
           </div>

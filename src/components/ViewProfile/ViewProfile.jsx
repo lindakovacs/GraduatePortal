@@ -16,10 +16,12 @@ class ViewProfile extends Component {
     e.target.src = noPic;
   }
 
-  handleActivation = (e) => {
+  handleActivation = e => {
     e.target.blur();
     let newProfileData = this.state.profileData;
-    newProfileData[0].isActive = Math.abs(this.state.profileData[0].isActive - 1);
+    newProfileData[0].isActive = Math.abs(
+      this.state.profileData[0].isActive - 1
+    );
     const editProfileData = {
       graduateId: newProfileData[0]._id,
       firstName: newProfileData[0].firstName,
@@ -35,13 +37,15 @@ class ViewProfile extends Component {
       image: newProfileData[0].image,
       resume: newProfileData[0].resume,
       isActive: newProfileData[0].isActive
-    }
-    
-    this.setState({
-      profileData: newProfileData
-    }, () => this.props.profileEdit(editProfileData)
+    };
+
+    this.setState(
+      {
+        profileData: newProfileData
+      },
+      () => this.props.profileEdit(editProfileData)
     );
-  }
+  };
 
   componentDidMount() {
     this.props.fetchAllProfiles().then(() => {
@@ -183,26 +187,50 @@ class ViewProfile extends Component {
                           )}
 
                           {/* Active/Inactive Button */}
-                          {this.props.isAdmin && (
-                            graduate.isActive ? (
-                                <Button
-                                  className="grad-btn grad-btn-admin-active"
-                                  bsSize="small"
-                                  onClick={e => this.handleActivation(e)}
-                                >
-                                  <span>Active</span>
-                                </Button>
+                          {this.props.isAdmin &&
+                            (graduate.isActive ? (
+                              <Button
+                                className="grad-btn grad-btn-admin-active"
+                                bsSize="small"
+                                onClick={e => this.handleActivation(e)}
+                              >
+                                <span>Active</span>
+                              </Button>
                             ) : (
-                                <Button
-                                  className="grad-btn grad-btn-admin-inactive"
-                                  bsSize="small"
-                                  onClick={e => this.handleActivation(e)}
-                                >
-                                  <span>InActive</span>
-                                </Button>
-                            )
-                          )}
+                              <Button
+                                className="grad-btn grad-btn-admin-inactive"
+                                bsSize="small"
+                                onClick={e => this.handleActivation(e)}
+                              >
+                                <span>InActive</span>
+                              </Button>
+                            ))}
 
+                          {/* if isGrad is true the Active/Inactive button wont render */}
+                          {this.props.isGrad &&
+                            (graduate.isActive
+                              ? !(
+                                  <Button
+                                    className="grad-btn grad-btn-admin-active"
+                                    bsSize="small"
+                                    onClick={e =>
+                                      this.handleActivation(e, graduate._id)
+                                    }
+                                  >
+                                    <span>Active</span>
+                                  </Button>
+                                )
+                              : !(
+                                  <Button
+                                    className="grad-btn grad-btn-admin-inactive"
+                                    bsSize="small"
+                                    onClick={e =>
+                                      this.handleActivation(e, graduate._id)
+                                    }
+                                  >
+                                    <span>InActive</span>
+                                  </Button>
+                                ))}
                           {/* Edit Profile Button */}
                           {this.props.isAdmin && (
                             <LinkContainer
