@@ -4,6 +4,7 @@ import { Button, Modal, Form } from "react-bootstrap";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { newuserCreation } from "../../services/api";
 
 class NewUsers extends Component {
   state = {
@@ -12,21 +13,27 @@ class NewUsers extends Component {
     dataToSend: {
       emails: [],
       isGrad: true
-    }
+    },
+    serverResponse: ""
   };
 
-  upload = async (url, method = "PUT") => {
-    const token = localStorage.getItem("token");
-    const data = this.state.dataToSend;
-    const response = await axios(url, {
-      method,
-      headers: {
-        Accept: "application/json",
-        Authorization: token ? `Bearer ${token}` : ""
-      },
-      data
-    });
-    return response.data;
+  createNewUsers = async newUserInfo => {
+    console.log("new User", newUserInfo);
+    const response = await newuserCreation(newUserInfo);
+    console.log(response);
+
+    if (response.success === 1) {
+      this.notify();
+    } else {
+      this.errorNotify();
+    }
+
+    // const response = await axios.post(
+    //   "`${api}`users/new`,
+    //   newUserInfo
+    // );
+    // if (response.token) localStorage.token = response.token;
+    // this.setState({ serverResponse: response });
   };
 
   handleClick = e => {
@@ -41,7 +48,14 @@ class NewUsers extends Component {
     this.setState({ showModal: true });
   };
 
-  notify = () => toast("Wow so easy !");
+  notify = () => toast("Thank you!");
+
+  errorNotify = () => toast("Something went wrong.");
+
+  inputErrorNotify = () =>
+    toast(
+      "Please check your input. Make sure each email address is separated by a comma."
+    );
 
   handleInput = e => {
     this.setState({ emailInput: e.target.value });
@@ -66,13 +80,24 @@ class NewUsers extends Component {
     }
 
     if (trimmedArray.length === 1 && numberOfAts === 1) {
-      //alert success
-
-      this.notify();
       this.setState({ showModal: false });
-      //submitEmails(trimmedArray);
+
+      const { dataToSend } = this.state;
+      dataToSend.emails = [...trimmedArray];
+
+      this.setState(
+        {
+          dataToSend
+        },
+        () => console.log("this is saved Emails", this.state.dataToSend)
+      );
+
+      this.setState({
+        serverResponse: this.createNewUsers(this.state.dataToSend)
+      });
+      console.log(this.state.serverResponse);
     } else if (numberOfAts - numberOfCommas !== 1) {
-      //alert input error
+      this.inputErrorNotify();
     } else {
       //alert it went ok
       this.setState({ showModal: false });
@@ -128,7 +153,7 @@ class NewUsers extends Component {
                   type="checkbox"
                   onClick={e => this.handleClick(e.target.checked)}
                 />
-                <label class="form-check-label">
+                <label className="form-check-label">
                   These new accounts will be admin accounts
                 </label>
               </div>
