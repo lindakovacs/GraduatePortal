@@ -315,7 +315,8 @@ class Search extends Component {
                         </LinkContainer>
 
                         {/* Active/Inactive Button */}
-                        {(this.props.isAdmin || this.props.graduateId !== "") &&
+                        {(this.props.isAdmin ||
+                          this.props.graduateId === graduate._id) &&
                           (graduate.isActive ? (
                             <Button
                               className="grad-btn grad-btn-admin-active"
@@ -340,7 +341,7 @@ class Search extends Component {
 
                         {/* Edit Profile Button */}
                         {(this.props.isAdmin ||
-                          this.props.graduateId !== "") && (
+                          this.props.graduateId === graduate._id) && (
                           <LinkContainer to={`/profile/${graduate._id}/edit`}>
                             <Button
                               className="grad-btn grad-btn-admin"
