@@ -149,7 +149,7 @@ class Search extends Component {
               {/* Add Profile Button */}
               {/* if isGrad is true then the add profile button will render */}
 
-              {this.props.isAdmin && this.props.isGrad && (
+              {(this.props.isAdmin || this.props.isGrad) && (
                 <LinkContainer to="/profile/add">
                   <Button
                     className="grad-btn grad-btn-admin add-btn"
