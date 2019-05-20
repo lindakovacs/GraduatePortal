@@ -147,9 +147,9 @@ class Search extends Component {
               <h1>Graduate Portal</h1>
 
               {/* Add Profile Button */}
-              {/* if isGrad is not true then the add profile button will not render */}
+              {/* if isGrad is true then the add profile button will render */}
 
-              {this.props.isAdmin && !this.props.isGrad && (
+              {this.props.isAdmin && this.props.isGrad && (
                 <LinkContainer to="/profile/add">
                   <Button
                     className="grad-btn grad-btn-admin add-btn"
@@ -160,7 +160,6 @@ class Search extends Component {
                   </Button>
                 </LinkContainer>
               )}
-           
             </div>
 
             {/* Filter Profiles Input */}
@@ -317,7 +316,7 @@ class Search extends Component {
 
                         {/* Active/Inactive Button */}
                         {this.props.isAdmin &&
-                          !this.props.isGrad &&
+                          this.props.isGrad === false &&
                           (graduate.isActive ? (
                             <Button
                               className="grad-btn grad-btn-admin-active"
@@ -341,7 +340,8 @@ class Search extends Component {
                           ))}
 
                         {/* Edit Profile Button */}
-                        {this.props.isAdmin && !this.props.isGrad && (
+                        {(this.props.isAdmin ||
+                          this.props.graduateId !== "") && (
                           <LinkContainer to={`/profile/${graduate._id}/edit`}>
                             <Button
                               className="grad-btn grad-btn-admin"

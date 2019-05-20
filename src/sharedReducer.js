@@ -21,7 +21,8 @@ const sharedReducer = (
     case types.LOGOUT:
       return {
         ...state,
-        isAdmin: false
+        isAdmin: false,
+        isGrad: false
       };
     case types.FETCH_ALL_PROFILES_FULFILLED: {
       const { profiles } = action.payload;

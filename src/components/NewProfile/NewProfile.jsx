@@ -61,7 +61,7 @@ class NewProfile extends Component {
 
   // Setting Password with regexp
   passwordValidation = () => {
-    const { password, confirmPassword } = this.state;
+    const { password, confirmPassword } = this.state.profileData;
     let regexp = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,99}$/;
     if (password.match(regexp)) {
       if (password === confirmPassword) {
