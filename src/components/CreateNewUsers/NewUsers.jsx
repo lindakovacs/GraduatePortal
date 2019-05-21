@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 //import history from "../../history";
-import { Button, Modal, Form } from "react-bootstrap";
-import axios from "axios";
+import { Button, Modal } from "react-bootstrap";
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { newuserCreation } from "../../services/api";
 
 class NewUsers extends Component {
   state = {
-    showModal: false,
+    showModal: true,
     emailInput: "",
     dataToSend: {
       emails: [],
@@ -27,13 +27,6 @@ class NewUsers extends Component {
     } else {
       this.errorNotify();
     }
-
-    // const response = await axios.post(
-    //   "`${api}`users/new`,
-    //   newUserInfo
-    // );
-    // if (response.token) localStorage.token = response.token;
-    // this.setState({ serverResponse: response });
   };
 
   handleClick = e => {
@@ -132,8 +125,6 @@ class NewUsers extends Component {
           draggable
           pauseOnHover
         />
-
-        <Button onClick={e => this.handleAddEmails(e)}>Add users</Button>
 
         <Modal
           show={this.state.showModal}
