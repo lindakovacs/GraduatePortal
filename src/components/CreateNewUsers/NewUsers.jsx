@@ -41,13 +41,15 @@ class NewUsers extends Component {
     this.setState({ showModal: true });
   };
 
-  notify = () => toast("Thank you!");
+  notify = () => toast("Thank you!", { type: toast.TYPE.SUCCESS });
 
-  errorNotify = () => toast("Something went wrong.");
+  errorNotify = () =>
+    toast("Something went wrong.", { type: toast.TYPE.ERROR });
 
   inputErrorNotify = () =>
     toast(
-      "Please check your input. Make sure each email address is separated by a comma."
+      "Please check your input. Make sure each email address is separated by a comma.",
+      { type: toast.TYPE.WARNING }
     );
 
   handleInput = e => {
