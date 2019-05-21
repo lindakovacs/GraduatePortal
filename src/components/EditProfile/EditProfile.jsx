@@ -472,6 +472,7 @@ class EditProfile extends Component {
                     })
                   }
                 />
+                s
               </FormGroup>
 
               <FormGroup controlId="story">

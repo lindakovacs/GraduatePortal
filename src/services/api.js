@@ -13,7 +13,9 @@ const send = (url, data = null, method = "POST") => {
       Authorization: token ? `Bearer ${token}` : ""
     },
     data: data ? JSON.stringify(data) : null
-  }).then(response => response.data);
+  })
+    .then(response => response.data)
+    .catch(error => error);
 };
 
 const upload = (url, image = null, method = "PUT") => {
@@ -79,6 +81,7 @@ export const uploadResumeRequest = data => {
 // Create pending users
 // --------------------------------------------------
 export const newuserCreation = newusers => {
+  console.log(newusers);
   return send(`${api}/users/new`, newusers).then(response => {
     if (response.token) localStorage.token = response.token;
     return response;
