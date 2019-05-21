@@ -63,23 +63,20 @@ class EditProfile extends Component {
     confirmPasswordValid: null
   };
 
-  // Setting Password with regexp
-  passwordValidation = () => {
+  handleEditProfile = e => {
+    e.preventDefault();
+    // Setting Password with regexp
     const { password, confirmPassword } = this.state.profileData;
     let regexp = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,99}$/;
     if (password.match(regexp)) {
       if (password === confirmPassword) {
-        return true;
+        // return true;
       } else {
         this.setState({ passwordError: "Passwords don't match" });
       }
     } else {
       this.setState({ passwordError: "Password doesn't meet requirements" });
     }
-  };
-
-  handleEditProfile = e => {
-    e.preventDefault();
 
     // check for validation on required fields
     const requiredArray = [
@@ -654,7 +651,7 @@ class EditProfile extends Component {
                 type="submit"
                 className="btn grad-btn grad-btn-admin grad-btn-admin-submit"
                 disabled={this.props.isLoading === true}
-                onClick={() => this.passwordValidation()}
+                // onChange={() => this.handleEditProfile}
               >
                 {this.props.isLoading ? "LOADING..." : "UPDATE"}
               </Button>
