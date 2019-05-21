@@ -1,10 +1,16 @@
 import React, { Component } from "react";
+import ReactDOM from "react-dom";
 import { Navbar, Nav, NavItem } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import accLogo from "../../images/albany-can-code-logo-white.png";
 import "./NavBar.css";
+import NewUsers from "../CreateNewUsers/NewUsers";
 
 class NavBar extends Component {
+  state = {
+    toggleNewUser: false
+  };
+
   render() {
     return (
       <div>
@@ -24,10 +30,22 @@ class NavBar extends Component {
           {/* Show extra features for admins */}
           {this.props.isAdmin ? (
             <Navbar.Collapse>
+              {this.state.toggleNewUser && <NewUsers />}
               <Nav pullRight>
                 <LinkContainer exact to="/" className="acc-link">
                   <NavItem eventKey={1}>SEARCH</NavItem>
                 </LinkContainer>
+
+                <NavItem
+                  className="new-user"
+                  eventKey={3}
+                  onClick={() =>
+                    this.setState({ toggleNewUser: !this.state.toggleNewUser })
+                  }
+                >
+                  ADD USERS
+                </NavItem>
+
                 <NavItem
                   className="acc-link"
                   href="#"

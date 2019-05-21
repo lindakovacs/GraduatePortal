@@ -28,8 +28,6 @@ class EditProfile extends Component {
     graduateId: this.props.match.params.graduateId,
     isNew: false,
     isAdmin: true,
-    // added isGrad field
-    isGrad: false,
     isLoading: false,
     hasError: false,
     profileData: {
@@ -40,12 +38,6 @@ class EditProfile extends Component {
       github: "",
       linkedin: "",
       email: "",
-      // added password to state
-      password: "",
-      // added confirmPassword
-      confirmPassword: "",
-      // added passWordError
-      passwordError: "",
       website: "",
       phone: "",
       yearOfGrad: "",
@@ -59,21 +51,9 @@ class EditProfile extends Component {
     yearOfGradValid: null,
     emailValid: null,
     submitForm: false,
-    passwordValid: null
-  };
-
-  // Setting Password with regexp
-  passwordValidation = () => {
-    let regexp = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,99}$/;
-    if (this.state.password.match(regexp)) {
-      if (this.state.password === this.state.confirmedpassword) {
-        return true;
-      } else {
-        this.setState({ passwordError: "Passwords don't match" });
-      }
-    } else {
-      this.setState({ passwordError: "Password doesn't meet requirements" });
-    }
+    oldPassword: "",
+    newPassword: "",
+    
   };
 
   handleEditProfile = e => {
@@ -84,11 +64,7 @@ class EditProfile extends Component {
       ["firstName", "firstNameValid"],
       ["lastName", "lastNameValid"],
       ["yearOfGrad", "yearOfGradValid"],
-      ["email", "emailValid"],
-      // added password Validation
-      ["password", "passwordValid"],
-      // confirm password valiudation
-      ["confirmPassword", "confirmPasswordValid"]
+      ["email", "emailValid"]
     ];
     for (let key of requiredArray) {
       if (!this.state.profileData[key[0]]) {
@@ -145,8 +121,8 @@ class EditProfile extends Component {
         ...this.state.profileData,
         isActive: Math.abs(this.state.profileData.isActive - 1)
       }
-    });
-  };
+    })
+  }
 
   closeModal = () => {
     this.setState({
@@ -165,33 +141,6 @@ class EditProfile extends Component {
     e.target.src = noPic;
   }
 
-  handleSetProfileData(id) {
-    let profile = this.props.profiles.find(profile => profile._id === id);
-    this.setState({
-      profileData: {
-        _id: id,
-        firstName: profile.firstName,
-        lastName: profile.lastName,
-        // convert skills to a string
-        skills: profile.skills.join(", "),
-        github: profile.links.github,
-        linkedin: profile.links.linkedin,
-        email: profile.links.email,
-        // added password
-        password: profile.password,
-        // added confirm password
-        confirmPassword: profile.confirmPassword,
-        website: profile.links.website,
-        phone: profile.phone,
-        yearOfGrad: profile.yearOfGrad,
-        image: profile.image,
-        resume: profile.resume,
-        story: profile.story,
-        isActive: profile.isActive
-      }
-    });
-  }
-
   componentDidMount() {
     let id = this.state.graduateId;
     if (!this.props.profiles) {
@@ -206,10 +155,6 @@ class EditProfile extends Component {
             github: this.props.profiles[id].links.github,
             linkedin: this.props.profiles[id].links.linkedin,
             email: this.props.profiles[id].links.email,
-            // added password to props.profiles
-            password: this.props.profiles[id].password,
-            // added confrimPassword to props.profiles
-            confirmPassword: this.props.profiles[id].confirmedpassword,
             website: this.props.profiles[id].links.website,
             phone: this.props.profiles[id].phone,
             yearOfGrad: this.props.profiles[id].yearOfGrad,
@@ -234,10 +179,6 @@ class EditProfile extends Component {
           github: profile.links.github,
           linkedin: profile.links.linkedin,
           email: profile.links.email,
-          // added password to profile
-          password: profile.password,
-          // added confirmPassword to profile
-          confirmPassword: profile.confirmPassword,
           website: profile.links.website,
           phone: profile.phone,
           yearOfGrad: profile.yearOfGrad,
@@ -270,19 +211,6 @@ class EditProfile extends Component {
                 </Button>
               </LinkContainer>
             )}
-            {/* if isGrad is true then the add profile button will not render */}
-            {this.props.isGrad &&
-              !(
-                <LinkContainer to="/profile/add">
-                  <Button
-                    className="grad-btn grad-btn-admin add-btn"
-                    title="Add new graduate profile"
-                    bsSize="small"
-                  >
-                    +
-                  </Button>
-                </LinkContainer>
-              )}
           </header>
         </div>
 
@@ -339,22 +267,18 @@ class EditProfile extends Component {
 
             {/* Profile Resume */}
             <div className="form-resume">
-              {this.state.profileData.resume ? (
-                <img
-                  src={resumeIcon}
-                  width={100}
-                  height={100}
-                  alt="Resume icon"
-                />
-              ) : (
+            {this.state.profileData.resume ?
+              <img 
+                src={resumeIcon}
+                width={100}
+                height={100}
+                alt="Resume icon" />
+              : (
                 <div className="missing-btn">
-                  <h3>
-                    Add
-                    <br />
-                    Resume
-                  </h3>
+                  <h3>Add<br />Resume</h3>
                 </div>
-              )}
+                  )
+              }
               <div className="choose-btn">
                 <h3>
                   {this.state.profileData.resume ? "Update" : "Add"} Resume
@@ -367,20 +291,18 @@ class EditProfile extends Component {
                 onChange={e => this.uploadFile(e)}
               />
             </div>
-
+            
             <div className="clearfix" />
 
             {/* Profile Form */}
             <form onSubmit={this.handleEditProfile}>
-              <FormGroup controlId="isActive">
-                <ControlLabel bsClass="control-label isActive">
-                  Profile Activated
-                </ControlLabel>
-                <Checkbox
+
+              <FormGroup controlId="isActive" >
+                <ControlLabel bsClass="control-label isActive">Profile Activated</ControlLabel>
+                <Checkbox 
                   checked={!!this.state.profileData.isActive}
                   onChange={this.handleCheckbox}
-                  readOnly
-                />
+                  readOnly />
               </FormGroup>
 
               <FormGroup
@@ -389,10 +311,8 @@ class EditProfile extends Component {
               >
                 <ControlLabel>
                   First Name
-                  <span
-                    className={`helper helper-asterisk ${this.state
-                      .firstNameValid && "helper-asterisk-red"}`}
-                  >
+                  <span 
+                    className={`helper helper-asterisk ${this.state.firstNameValid && "helper-asterisk-red"}`}>
                     *
                   </span>
                 </ControlLabel>
@@ -417,10 +337,8 @@ class EditProfile extends Component {
               >
                 <ControlLabel>
                   Last Name
-                  <span
-                    className={`helper helper-asterisk ${this.state
-                      .lastNameValid && "helper-asterisk-red"}`}
-                  >
+                  <span 
+                    className={`helper helper-asterisk ${this.state.lastNameValid && "helper-asterisk-red"}`}>
                     *
                   </span>
                 </ControlLabel>
@@ -445,10 +363,8 @@ class EditProfile extends Component {
               >
                 <ControlLabel>
                   Year of Graduation
-                  <span
-                    className={`helper helper-asterisk ${this.state
-                      .yearOfGradValid && "helper-asterisk-red"}`}
-                  >
+                  <span 
+                    className={`helper helper-asterisk ${this.state.yearOfGradValid && "helper-asterisk-red"}`}>
                     *
                   </span>
                 </ControlLabel>
@@ -508,7 +424,9 @@ class EditProfile extends Component {
               </FormGroup>
 
               <FormGroup controlId="phone">
-                <ControlLabel>Phone Number</ControlLabel>
+                <ControlLabel>
+                  Phone Number
+                </ControlLabel>
                 <FormControl
                   type="text"
                   placeholder="Phone Number: XXX-XXX-XXXX"
@@ -530,10 +448,8 @@ class EditProfile extends Component {
               >
                 <ControlLabel>
                   Email
-                  <span
-                    className={`helper helper-asterisk ${this.state
-                      .emailValid && "helper-asterisk-red"}`}
-                  >
+                  <span 
+                    className={`helper helper-asterisk ${this.state.emailValid && "helper-asterisk-red"}`}>
                     *
                   </span>
                 </ControlLabel>
@@ -546,62 +462,6 @@ class EditProfile extends Component {
                       profileData: {
                         ...this.state.profileData,
                         email: e.target.value
-                      }
-                    })
-                  }
-                />
-              </FormGroup>
-
-              <FormGroup
-                controlId="password"
-                validationState={this.state.passwordValid}
-              >
-                <ControlLabel>
-                  Password
-                  <span
-                    className={`helper helper-asterisk ${this.state
-                      .passwordValid && "helper-asterisk-red"}`}
-                  >
-                    *
-                  </span>
-                </ControlLabel>
-                <FormControl
-                  type="password"
-                  placeholder="password"
-                  value={this.state.profileData.password}
-                  onChange={e =>
-                    this.setState({
-                      profileData: {
-                        ...this.state.profileData,
-                        password: e.target.value
-                      }
-                    })
-                  }
-                />
-              </FormGroup>
-
-              <FormGroup
-                controlId="confirmPassword"
-                validationState={this.state.confirmPasswordValid}
-              >
-                <ControlLabel>
-                  Confirm Password
-                  <span
-                    className={`helper helper-asterisk ${this.state
-                      .confirmPasswordValid && "helper-asterisk-red"}`}
-                  >
-                    *
-                  </span>
-                </ControlLabel>
-                <FormControl
-                  type="password"
-                  placeholder="confirm-password"
-                  value={this.state.profileData.confirmPassword}
-                  onChange={e =>
-                    this.setState({
-                      profileData: {
-                        ...this.state.profileData,
-                        confirmPassword: e.target.value
                       }
                     })
                   }
@@ -663,7 +523,6 @@ class EditProfile extends Component {
                 type="submit"
                 className="btn grad-btn grad-btn-admin grad-btn-admin-submit"
                 disabled={this.props.isLoading === true}
-                onClick={() => this.passwordValidation()}
               >
                 {this.props.isLoading ? "LOADING..." : "UPDATE"}
               </Button>
