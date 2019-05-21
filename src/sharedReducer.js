@@ -23,7 +23,8 @@ const sharedReducer = (
       return {
         ...state,
         isAdmin: false,
-        isGrad: false
+        isGrad: false,
+        graduateId: ""
       };
     case types.FETCH_ALL_PROFILES_FULFILLED: {
       const { profiles } = action.payload;
