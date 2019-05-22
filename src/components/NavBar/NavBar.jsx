@@ -29,21 +29,25 @@ class NavBar extends Component {
           {/* Show extra features for admins & Grads */}
           {this.props.isAdmin || this.props.isGrad ? (
             <Navbar.Collapse>
-              {this.state.toggleNewUser && <NewUsers />}
+              {this.state.toggleNewUser && this.props.isAdmin && <NewUsers />}
               <Nav pullRight>
                 <LinkContainer exact to="/" className="acc-link">
                   <NavItem eventKey={1}>SEARCH</NavItem>
                 </LinkContainer>
 
-                <NavItem
-                  className="new-user"
-                  eventKey={3}
-                  onClick={() =>
-                    this.setState({ toggleNewUser: !this.state.toggleNewUser })
-                  }
-                >
-                  ADD USERS
-                </NavItem>
+                {this.props.isAdmin && (
+                  <NavItem
+                    className="new-user"
+                    eventKey={3}
+                    onClick={() =>
+                      this.setState({
+                        toggleNewUser: !this.state.toggleNewUser
+                      })
+                    }
+                  >
+                    ADD USERS
+                  </NavItem>
+                )}
 
                 <NavItem
                   className="acc-link"
