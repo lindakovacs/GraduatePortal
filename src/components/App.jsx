@@ -11,6 +11,8 @@ import NewProfileContainer from "./NewProfile/NewProfileContainer";
 import EditProfileContainer from "./EditProfile/EditProfileContainer";
 import RegistrationContainer from "./Registration/RegistrationContainer";
 import NewUsersContainer from "./CreateNewUsers/NewUsersContainer";
+import ForgotPasswordContainer from "./ForgotPassword/ForgotPasswordContainer";
+import ResetPasswordContainer from "./ResetPassword/ResetPasswordContainer";
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
         <Route exact path="/" component={SearchContainer} />
         <Route path="/user/reg-form" component={RegistrationContainer} />
         <Route exact path="/login" component={LoginContainer} />
+        <Route exact path="/forgotPassword" component={ForgotPasswordContainer} />
+        <Route exact path="/resetPassword/:token" component={ResetPasswordContainer} />
         <Route exact path="/profile/add" component={NewProfileContainer} />
         <Route
           exact

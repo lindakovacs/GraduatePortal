@@ -99,3 +99,21 @@ export const newuserRegister = (email, temppassword) => {
     return response;
   });
 };
+
+// Forgot Password, Reset Password use the "send" AJAX call
+// ----------------------------------------------------------------------
+export const ForgotPasswordRequest = (email) => {
+  return send(`${api}/user/forgot-password`, {
+    email
+  }).then(response => {
+    return response;
+  });
+};
+
+export const ResetPasswordRequest = (password) => {
+  return send(`${api}/user/reset-password`, {
+    password
+  }).then(response => {
+    return response;
+  });
+};
