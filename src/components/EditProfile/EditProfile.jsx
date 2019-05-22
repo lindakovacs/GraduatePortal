@@ -66,17 +66,14 @@ class EditProfile extends Component {
   handleEditProfile = e => {
     e.preventDefault();
     // Setting Password with regexp
+    // let regexp = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,99}$/;
     const { password, confirmPassword } = this.state.profileData;
-    let regexp = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,99}$/;
-    if (password.match(regexp)) {
-      if (password === confirmPassword) {
-        // return true;
-      } else {
-        this.setState({ passwordError: "Passwords don't match" });
-      }
+    if (password === confirmPassword) {
+      return true;
     } else {
-      this.setState({ passwordError: "Password doesn't meet requirements" });
+     alert("Passwords don't match")
     }
+    
 
     // check for validation on required fields
     const requiredArray = [

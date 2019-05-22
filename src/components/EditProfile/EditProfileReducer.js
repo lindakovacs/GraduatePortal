@@ -3,7 +3,7 @@ import * as types from "../../constants/actionTypes";
 const EditProfileReducer = (
   state = {
     isLoading: false,
-    hasError: false
+    hasError: false,
   },
   action
 ) => {
@@ -13,6 +13,7 @@ const EditProfileReducer = (
         ...state,
         isLoading: false,
         hasError: false
+        
       };
     case types.EDIT_PROFILE_PENDING:
       return {

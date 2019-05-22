@@ -37,7 +37,7 @@ class ModalWidget extends Component {
                 View Graduate Profile
               </Link>
             </p>
-            {/\/profile\/add/.test(currentRoute) ? (
+            {/\/profile\/add/.test(currentRoute)  ? (
               <p>
                 <Button bsStyle="link" onClick={this.handleLinkToViewProfile}>
                   Create a New Profile

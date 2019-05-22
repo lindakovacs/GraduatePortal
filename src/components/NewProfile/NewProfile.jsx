@@ -59,8 +59,18 @@ class NewProfile extends Component {
     confirmPasswordValid: null
   };
 
+  onChangeInput = e => {
+    this.setState({
+      profileData: {
+        ...this.state.profileData,
+        [e.target.name]: e.target.value ? e.target.value : ""
+      }
+    });
+  };
+
   // Setting Password with regexp
-  passwordValidation = () => {
+  handleNewProfile = e => {
+    e.preventDefault();
     const { password, confirmPassword } = this.state.profileData;
     let regexp = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,99}$/;
     if (password.match(regexp)) {
@@ -72,19 +82,6 @@ class NewProfile extends Component {
     } else {
       this.setState({ passwordError: "Password doesn't meet requirements" });
     }
-  };
-
-  onChangeInput = e => {
-    this.setState({
-      profileData: {
-        ...this.state.profileData,
-        [e.target.name]: e.target.value ? e.target.value : ""
-      }
-    });
-  };
-
-  handleNewProfile = e => {
-    e.preventDefault();
 
     // check for validation on required fields
     const requiredArray = [
@@ -416,16 +413,10 @@ class NewProfile extends Component {
                   </ControlLabel>
                   <FormControl
                     type="password"
-                    placeholder="password"
+                    placeholder="Password"
+                    name="password"
                     value={this.state.profileData.password}
-                    onChange={e =>
-                      this.setState({
-                        profileData: {
-                          ...this.state.profileData,
-                          password: e.target.value
-                        }
-                      })
-                    }
+                    onChange={this.onChangeInput}
                   />
                 </FormGroup>
 
@@ -445,15 +436,9 @@ class NewProfile extends Component {
                   <FormControl
                     type="password"
                     placeholder="confirm-password"
+                    name="confirmPassword"
                     value={this.state.profileData.confirmPassword}
-                    onChange={e =>
-                      this.setState({
-                        profileData: {
-                          ...this.state.profileData,
-                          confirmPassword: e.target.value
-                        }
-                      })
-                    }
+                    onChange={this.onChangeInput}
                   />
                 </FormGroup>
               </FormGroup>
@@ -490,7 +475,7 @@ class NewProfile extends Component {
                 type="submit"
                 className="btn grad-btn grad-btn-admin grad-btn-admin-submit"
                 disabled={this.props.isLoading === true}
-                onclick={() => this.passwordValidation()}
+                onclick={() => this.handleNewProfile}
               >
                 {this.props.isLoading ? "LOADING..." : "ADD"}
               </Button>
