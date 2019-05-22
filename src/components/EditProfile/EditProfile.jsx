@@ -71,9 +71,15 @@ class EditProfile extends Component {
     if (password === confirmPassword) {
       return true;
     } else {
-     alert("Passwords don't match")
+      alert("doesn't match");
     }
-    
+    // if (password && confirmPassword !== "") {
+    //   if (password === confirmPassword) {
+    //     if (password.length && confirmPassword.length >= 5) return true;
+    //   } else {
+    //     alert("Password does not meet requirements");
+    //   }
+    // }
 
     // check for validation on required fields
     const requiredArray = [
