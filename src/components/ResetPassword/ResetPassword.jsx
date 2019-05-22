@@ -4,9 +4,6 @@ import axios from 'axios';
 import { FormGroup, FormControl, Button } from "react-bootstrap";
 import { Link, Redirect } from "react-router-dom";
 
-// import ForgotPasswordContainer from "./ForgotPassword/ForgotPasswordContainer";
-// import SearchContainer from "./Search/SearchContainer";
-// import LoginContainer from "./Login/LoginContainer";
 import "./ResetPassword.css";
 
 const loading = {
@@ -24,13 +21,15 @@ export default class ResetPassword extends Component {
       confirmPassword: '',
       updated: false,
       isLoading: true,
-      error: false
+      error: false,
+      resetPasswordToken: ''
     };
   }
 
   async componentDidMount() {
+     // localStorage.setItem("token", resetPasswordToken);
     await axios
-      .get('http://graduateportal-dev.tw7ahpynm7.us-east-2.elasticbeanstalk.com/api/user/reset-password', {
+      .post('http://graduateportal-dev.tw7ahpynm7.us-east-2.elasticbeanstalk.com/api/user/reset-password', {
         params: {
           resetPasswordToken: this.props.match.params.token
         },
@@ -64,7 +63,7 @@ export default class ResetPassword extends Component {
 
   updatePassword = (e) => {
     e.preventDefault();
-    localStorage.setItem("token");
+    // localStorage.setItem("token", resetPasswordToken);
     axios
       .put('http://graduateportal-dev.tw7ahpynm7.us-east-2.elasticbeanstalk.com/api/user/updatePasswordViaEmail', {
         email: this.state.email,
@@ -104,9 +103,7 @@ password, confirmPassword, error, isLoading, updated
           </header>
           <div style={loading}>
             <h4>Problem resetting password. Please send another reset link.</h4>
-            <Link to="/">Go Home</Link>
-            {/* <Link to="/" buttonText="Go Home" component={SearchContainer} > Go Home </Link> */}
-            {/* <Link to="/forgotPassword" buttonText="Forgot Password" component={ForgotPasswordContainer} /> */}
+            <Link to="/forgotPassword">Forgot Password</Link>
           </div>
         </div>
       );
@@ -128,8 +125,7 @@ password, confirmPassword, error, isLoading, updated
             <h2>Reset Password</h2>
           </header>
           <main className="panel-body">
-        <FormGroup>
-        {/* <FormGroup controlId="reset-password"> */}
+        <FormGroup validationState={this.props.validationState}>
         <FormControl
                 type="password"
                 id="password"
@@ -156,6 +152,12 @@ password, confirmPassword, error, isLoading, updated
               className="btn acc-btn acc-btn-primary login-btn"
               placeholder="Update Password"
               onClick={() => this.sendEmail()}
+              // onClick={async () =>
+              //   await props.updatePassword(password).then(() => {
+              //     if (props.isLoading === false && props.hasError === false) {
+              //       props.history.push("/login");
+              //     }
+              //   })
               disabled={this.isLoading === true}
             >
               {this.isLoading ? "LOADING ..." : "RESET PASSWORD"}
@@ -167,11 +169,10 @@ password, confirmPassword, error, isLoading, updated
               Your password has been successfully reset, please try logging in
               again.
             </p>
-            {/* <Link to="/login" buttonText="Login" component={LoginContainer} /> */}
-            <Link to="/">Go Home</Link>
+            <Link to="/login">Login</Link>
+            <Link to="/">Home</Link>
           </div>
         )}
-        {/* <Link to="/" buttonText="Go Home" component={SearchContainer} /> */}
         <Redirect to="/" />
         </main>
         </form>

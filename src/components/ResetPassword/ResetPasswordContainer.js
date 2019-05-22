@@ -10,7 +10,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    resetPassword: (email, password) => dispatch(resetPassword(email, password))
+    resetPassword: (password) => dispatch(resetPassword(password))
   };
 }
 

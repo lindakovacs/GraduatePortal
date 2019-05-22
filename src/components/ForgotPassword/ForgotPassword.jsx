@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { FormGroup, FormControl, Button } from "react-bootstrap";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ErrorMessage from "../Widgets/ErrorMessage";
-// import SearchContainer from "./Search/SearchContainer";
 import "./ForgotPassword.css";
 
 class ForgotPassword extends Component {
@@ -13,7 +12,8 @@ class ForgotPassword extends Component {
       email: "",
       hasError: false,
       messageFromServer: "",
-      showNullError: false
+      showNullError: false,
+      isEmailInvalid: false
     };
   }
 
@@ -40,8 +40,7 @@ class ForgotPassword extends Component {
             <h2>Forgot Password</h2>
           </header>
           <main className="panel-body">
-          <FormGroup>
-          {/* <FormGroup controlId="forgot-password" >*/}
+          <FormGroup validationState={this.props.validationState} >
               <FormControl
                 type="email"
                 placeholder="Email Address"
@@ -56,7 +55,6 @@ class ForgotPassword extends Component {
             <Button
               type="submit"
               className="btn acc-btn acc-btn-primary login-btn"
-              // buttonText="Send Password Reset Email"
               // onClick={() => this.sendEmail()}
               disabled={this.isLoading === true}
             >
@@ -71,20 +69,33 @@ class ForgotPassword extends Component {
               </div>
             )}
             {hasError && (
-              <div>
                 <ErrorMessage errorData="login-error">
                   That email address isn&apos;t correct. Please contact the
                   administrator.
                 </ErrorMessage>
-              </div>
             )}
             {messageFromServer === "recovery email sent" && (
               <div>
                 <h3>Password Reset Email Successfully Sent!</h3>
               </div>
             )}
-            {/* <Link to="/" buttonText="Go Home" component={SearchContainer} /> */}
 
+          {/* {this.props.isEmailInvalid && (
+              <ErrorMessage errorData="login-error">
+                That email address isn&apos;t correct. Please contact the
+                  administrator.
+              </ErrorMessage>
+            )}
+            {this.props.hasError && (
+              <ErrorMessage errorData="login-error">
+                Sorry! The Graduate Portal is temporarily down. Our engineers
+                are aware of the problem and are hard at work trying to fix it.
+                Please come back later.
+              </ErrorMessage>
+            )} */}
+            <br/>
+            <Link to="/">Home</Link><br/>
+            <Link to="/login">Login</Link>
       </div>
     );
   }
