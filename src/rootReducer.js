@@ -5,6 +5,8 @@ import EditProfileReducer from "./components/EditProfile/EditProfileReducer";
 import NewProfileReducer from "./components/NewProfile/NewProfileReducer";
 import SearchReducer from "./components/Search/SearchReducer";
 import RegistrationReducer from "./components/Registration/RegistrationReducer";
+import ForgotPasswordReducer from './components/ForgotPassword/ForgotPasswordReducer';
+import ResetPasswordReducer from './components/ResetPassword/ResetPasswordReducer';
 
 const rootReducer = combineReducers({
   Shared: sharedReducer,
@@ -12,7 +14,9 @@ const rootReducer = combineReducers({
   Search: SearchReducer,
   EditProfile: EditProfileReducer,
   NewProfile: NewProfileReducer,
-  Registration: RegistrationReducer
+  Registration: RegistrationReducer,
+  ForgotPassword: ForgotPasswordReducer,
+  ResetPassword: ResetPasswordReducer
 });
 
 export default rootReducer;

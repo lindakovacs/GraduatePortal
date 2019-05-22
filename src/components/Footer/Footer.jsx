@@ -5,7 +5,9 @@ function Footer() {
   return (
     <footer>
       <div className="container">
-        <p>© 2016-2019 ALBANYCANCODE. ALL RIGHTS RESERVED.</p>
+        <p>
+          © 2016-{new Date().getFullYear()} ALBANYCANCODE. ALL RIGHTS RESERVED.
+        </p>
         <ul>
           <li><a href="https://albanycancode.org/">HOME</a></li>
           <li><a href="https://albanycancode.org/employers/">EMPLOYERS</a></li>
