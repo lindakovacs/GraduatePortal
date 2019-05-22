@@ -60,19 +60,20 @@ class EditProfile extends Component {
     emailValid: null,
     submitForm: false,
     passwordValid: null,
-    confirmPasswordValid: null
+    confirmPasswordValid: null,
+    validationState: this.props.validationState
   };
 
   handleEditProfile = e => {
     e.preventDefault();
     // Setting Password with regexp
     // let regexp = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,99}$/;
-    const { password, confirmPassword } = this.state.profileData;
-    if (password === confirmPassword) {
-      return true;
-    } else {
-      alert("doesn't match");
-    }
+    // const { password, confirmPassword } = this.state.profileData;
+    // if (password === confirmPassword) {
+    //   return true;
+    // } else {
+    //   alert("doesn't match");
+    // }
     // if (password && confirmPassword !== "") {
     //   if (password === confirmPassword) {
     //     if (password.length && confirmPassword.length >= 5) return true;
@@ -546,7 +547,7 @@ class EditProfile extends Component {
 
               <FormGroup
                 controlId="password"
-                validationState={this.state.passwordValid}
+                validationState={this.props.validationState}
               >
                 <ControlLabel>
                   Password
@@ -574,7 +575,7 @@ class EditProfile extends Component {
 
               <FormGroup
                 controlId="confirmPassword"
-                validationState={this.state.confirmPasswordValid}
+                validationState={this.props.validationState}
               >
                 <ControlLabel>
                   Confirm Password
@@ -659,6 +660,17 @@ class EditProfile extends Component {
               >
                 {this.props.isLoading ? "LOADING..." : "UPDATE"}
               </Button>
+
+              {this.props.isPasswordInvalid && (
+                <ErrorMessage errorData="login-error">
+                  Please make sure to have 1 Uppercase and 1 Lowercase letter
+                </ErrorMessage>
+              )}
+              {this.props.isConfirmPasswordInvalid && (
+                <ErrorMessage errorData="login-error">
+                  Please make sure to have 1 Uppercase and 1 Lowercase letter
+                </ErrorMessage>
+              )}
             </form>
           </main>
         )}
