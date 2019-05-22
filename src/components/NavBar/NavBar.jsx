@@ -35,19 +35,15 @@ class NavBar extends Component {
                   <NavItem eventKey={1}>SEARCH</NavItem>
                 </LinkContainer>
 
-                {this.props.isAdmin && (
-                  <NavItem
-                    className="new-user"
-                    eventKey={3}
-                    onClick={() =>
-                      this.setState({
-                        toggleNewUser: !this.state.toggleNewUser
-                      })
-                    }
-                  >
-                    ADD USERS
-                  </NavItem>
-                )}
+                <NavItem
+                  className="acc-link"
+                  eventKey={3}
+                  onClick={() =>
+                    this.setState({ toggleNewUser: !this.state.toggleNewUser })
+                  }
+                >
+                  ADD USERS
+                </NavItem>
 
                 <NavItem
                   className="acc-link"
