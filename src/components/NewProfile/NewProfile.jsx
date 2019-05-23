@@ -69,26 +69,15 @@ class NewProfile extends Component {
   };
 
   // Setting Password with regexp
-  handleEditProfile = e => {
+  handleNewProfile = e => {
     e.preventDefault();
-    // Setting Password with regexp
-    // let regexp = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,99}$/;
-    const { password, confirmPassword } = this.state.profileData;
-    if (password === confirmPassword) {
-      return true;
-    } else {
-      alert("doesn't match");
-    }
+
     // check for validation on required fields
     const requiredArray = [
       ["firstName", "firstNameValid"],
       ["lastName", "lastNameValid"],
       ["yearOfGrad", "yearOfGradValid"],
-      ["email", "emailValid"],
-      // added password Validation
-      ["password", "passwordValid"],
-      // confirm password valiudation
-      ["confirmPassword", "confirmPasswordValid"]
+      ["email", "emailValid"]
     ];
     for (let key of requiredArray) {
       if (!this.state.profileData[key[0]]) {
@@ -471,7 +460,6 @@ class NewProfile extends Component {
                 type="submit"
                 className="btn grad-btn grad-btn-admin grad-btn-admin-submit"
                 disabled={this.props.isLoading === true}
-                onclick={() => this.handleNewProfile}
               >
                 {this.props.isLoading ? "LOADING..." : "ADD"}
               </Button>

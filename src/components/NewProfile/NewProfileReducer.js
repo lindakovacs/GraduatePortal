@@ -10,12 +10,10 @@ const NewProfileReducer = (
 ) => {
   switch (action.type) {
     case types.NEW_PROFILE_FULFILLED:
-      const { graduateId } = action.payload;
       return {
         ...state,
         isLoading: false,
         hasError: false,
-        graduateId
       };
     case types.NEW_PROFILE_PENDING:
       return {

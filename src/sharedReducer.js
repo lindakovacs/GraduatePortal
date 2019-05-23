@@ -14,11 +14,26 @@ const sharedReducer = (
   switch (action.type) {
     case types.LOGIN_FULFILLED: {
       const { token, isGrad, graduateId } = action.payload;
-      console.log(graduateId);
       return token
         ? { ...state, isAdmin: !isGrad, isGrad: isGrad, graduateId: graduateId }
         : { ...state, isAdmin: false, isGrad: false };
     }
+    case types.NEW_USER_REGISTER_FULFILLED:
+      const { isGrad } = action.payload;
+      return {
+        ...state,
+        isGrad,
+        isAdmin: !isGrad
+      };
+    case types.NEW_PROFILE_FULFILLED:
+      const { graduateId } = action.payload;
+      return state.isGrad ?
+      {
+        ...state,
+        graduateId
+      } : {
+        ...state
+      }
     case types.LOGOUT:
       return {
         ...state,
