@@ -1,6 +1,4 @@
-import {
-  connect
-} from "react-redux";
+import { connect } from "react-redux";
 import NewProfile from "./NewProfile";
 import {
   profileNew,
@@ -15,10 +13,10 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = dispatch => ({
-  profileNew: (profileData) => dispatch(profileNew(profileData)),
-  uploadImageFile: (data) => dispatch(uploadImageFile(data)),
-  uploadResumeFile: (data) => dispatch(uploadResumeFile(data))
-})
+  profileNew: profileData => dispatch(profileNew(profileData)),
+  uploadImageFile: data => dispatch(uploadImageFile(data)),
+  uploadResumeFile: data => dispatch(uploadResumeFile(data))
+});
 
 export default connect(
   mapStateToProps,

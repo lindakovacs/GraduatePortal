@@ -4,7 +4,8 @@ import { logout } from "./NavBarActions";
 
 function mapStateToProps(state) {
   return {
-    isAdmin: state.Shared.isAdmin
+    isAdmin: state.Shared.isAdmin,
+    isGrad: state.Shared.isGrad
   };
 }
 
