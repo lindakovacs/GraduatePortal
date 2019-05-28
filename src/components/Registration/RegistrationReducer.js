@@ -11,12 +11,10 @@ const RegistrationReducer = (
 ) => {
   switch (action.type) {
     case types.NEW_USER_REGISTER_FULFILLED:
-      const { token } = action.payload;
       return {
         ...state,
         isLoading: false,
-        hasError: false,
-        token
+        hasError: false
       };
     case types.NEW_USER_REGISTER_PENDING:
       return {

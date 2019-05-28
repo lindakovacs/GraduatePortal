@@ -27,7 +27,7 @@ class Login extends Component {
             <h2>
               Graduate Portal
               <br />
-              Admin Login
+              Login
             </h2>
           </header>
           <main className="panel-body">
@@ -59,7 +59,8 @@ class Login extends Component {
             </Button>
             {this.props.isLoginInvalid && (
               <ErrorMessage errorData="login-error">
-                Your username or password does not match what we have in our records.
+                Your username or password does not match what we have in our
+                records.
               </ErrorMessage>
             )}
             {this.props.hasError && (
